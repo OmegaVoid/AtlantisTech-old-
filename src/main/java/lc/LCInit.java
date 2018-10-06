@@ -46,6 +46,7 @@ import lc.items.ItemPortableDHD;
 import lc.items.ItemStaff;
 import lc.items.ItemTransportRingActivator;
 import lc.recipe.DecoratorSetterRecipe;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -116,10 +117,10 @@ public class LCInit {
 		entities.staffProjectile = DefinitionWrapperProvider.provide(EntityStaffProjectile.class);
 
 		/* Initialize recipes */
-		initStargateRecipes(runtime, recipes, blocks, items);
-		initDecorRecipes(runtime, recipes, blocks, items);
-		initCrystalRecipes(runtime, recipes, blocks, items);
-		initOreRecipes(runtime, recipes, blocks, items);
+		//initStargateRecipes(runtime, recipes, blocks, items);
+		//initDecorRecipes(runtime, recipes, blocks, items);
+		//initCrystalRecipes(runtime, recipes, blocks, items);
+		//initOreRecipes(runtime, recipes, blocks, items);
 
 		/* Initialize structures */
 		structures.scatteredSurfaceStargate = new StructureDefinition("SurfaceStargate", SurfaceStargate.class) {
@@ -129,7 +130,7 @@ public class LCInit {
 					Random rng = (Random) t[1];
 					World world = (World) t[0];
 					int x = (Integer) t[2], y = (Integer) t[3];
-					if (world.provider.getDimensionId() != 0)
+					if (world.provider.getDimension() != 0)
 						return false;
 					if (x % 16 != 0 || y % 16 != 0)
 						return false;
@@ -177,7 +178,7 @@ public class LCInit {
 		IDefinitionReference triniumAlloyBlock = blocks.lanteaAlloyBlock.ref().pushAll(1, OreType.TRINIUM.ordinal());
 		IDefinitionReference naquadahIngot = items.lanteaAlloyItem.ref().pushAll(1, OreType.NAQUADAH.ordinal());
 
-		ItemStack ironIngot = new ItemStack(net.minecraft.init.Items.iron_ingot, 1);
+		ItemStack ironIngot = new ItemStack(net.minecraft.init.Items.IRON_INGOT, 1);
 
 		recipes.naquadahIngot = new SimpleRecipeDefinition("naquadah_ingot", RecipeType.SHAPELESS, naquadahIngot, "01",
 				ironIngot, naquadah);
@@ -205,10 +206,10 @@ public class LCInit {
 	}
 
 	private void initCrystalRecipes(LCRuntime runtime, Recipes recipes, Blocks blocks, Items items) {
-		ItemStack diamond = new ItemStack(net.minecraft.init.Items.diamond, 1);
-		ItemStack lapis = new ItemStack(net.minecraft.init.Items.dye, 1, 4);
-		ItemStack glassPane = new ItemStack(net.minecraft.init.Blocks.glass_pane, 1);
-		ItemStack redstone = new ItemStack(net.minecraft.init.Items.redstone, 1);
+		ItemStack diamond = new ItemStack(net.minecraft.init.Items.DIAMOND, 1);
+		ItemStack lapis = new ItemStack(net.minecraft.init.Items.DYE, 1, 4);
+		ItemStack glassPane = new ItemStack(net.minecraft.init.Blocks.GLASS_PANE, 1);
+		ItemStack redstone = new ItemStack(net.minecraft.init.Items.REDSTONE, 1);
 
 		IDefinitionReference coreCrystal = items.lanteaCraftingItem.ref().pushAll(1,
 				ItemCraftingReagent.ReagentList.CORECRYSTAL.ordinal());
@@ -240,12 +241,12 @@ public class LCInit {
 		IDefinitionReference frameBlock = blocks.frameBlock.ref();
 		blocks.transporterBlock.ref();
 
-		ItemStack cSandstone = new ItemStack(net.minecraft.init.Blocks.sandstone, 1, 1);
-		ItemStack eyeOfEnder = new ItemStack(net.minecraft.init.Items.ender_eye, 1);
-		ItemStack glowstone = new ItemStack(net.minecraft.init.Items.glowstone_dust, 1);
-		ItemStack enderPearl = new ItemStack(net.minecraft.init.Items.ender_pearl, 1);
-		ItemStack ironIngot = new ItemStack(net.minecraft.init.Items.iron_ingot, 1);
-		ItemStack redstone = new ItemStack(net.minecraft.init.Items.redstone, 1);
+		ItemStack cSandstone = new ItemStack(net.minecraft.init.Blocks.SANDSTONE, 1, 1);
+		ItemStack eyeOfEnder = new ItemStack(net.minecraft.init.Items.ENDER_EYE, 1);
+		ItemStack glowstone = new ItemStack(net.minecraft.init.Items.GLOWSTONE_DUST, 1);
+		ItemStack enderPearl = new ItemStack(net.minecraft.init.Items.ENDER_PEARL, 1);
+		ItemStack ironIngot = new ItemStack(net.minecraft.init.Items.IRON_INGOT, 1);
+		ItemStack redstone = new ItemStack(net.minecraft.init.Items.REDSTONE, 1);
 
 		recipes.stargateBase = new SimpleRecipeDefinition("stargate_base", RecipeType.SHAPED, baseBlock, "010232454",
 				cSandstone, redstone, naquadahIngot, eyeOfEnder, ironIngot, coreCrystal);
@@ -264,52 +265,50 @@ public class LCInit {
 		runtime.registries().recipes().addRecipe(recipes.frame);
 	}
 
-	private void initDecorRecipes(LCRuntime runtime, Recipes recipes, Blocks blocks, Items items) {
-		IDefinitionReference decorator = items.lanteaDecoratorTool.ref();
-		IDefinitionReference decorLantSteel = blocks.lanteaDecorBlock.ref().pushAll(1, DecorBlockTypes.LantSteel.idx);
-		IDefinitionReference decorLantDecSteel = blocks.lanteaDecorBlock.ref().pushAll(1,
-				DecorBlockTypes.LantDecSteel.idx);
-		IDefinitionReference decorGoaGold = blocks.lanteaDecorBlock.ref().pushAll(1, DecorBlockTypes.GoaGold.idx);
-		IDefinitionReference decorGoaPatGold = blocks.lanteaDecorBlock.ref().pushAll(1, DecorBlockTypes.GoaDecGold.idx);
-		IDefinitionReference decorLantDoor = blocks.lanteaDoor.ref().pushAll(0);
-		IDefinitionReference decorGoauldDoor = blocks.lanteaDoor.ref().pushAll(1);
-		IDefinitionReference naquadah = items.lanteaOreItem.ref().pushAll(1, OreType.NAQUADAH.ordinal());
+		//IDefinitionReference decorLantSteel = blocks.lanteaDecorBlock.ref().pushAll(1, DecorBlockTypes.LantSteel.idx);
+		//IDefinitionReference decorLantDecSteel = blocks.lanteaDecorBlock.ref().pushAll(1,
+		//		DecorBlockTypes.LantDecSteel.idx);
+		//IDefinitionReference decorGoaGold = blocks.lanteaDecorBlock.ref().pushAll(1, DecorBlockTypes.GoaGold.idx);
+		//IDefinitionReference decorGoaPatGold = blocks.lanteaDecorBlock.ref().pushAll(1, DecorBlockTypes.GoaDecGold.idx);
+		//IDefinitionReference decorLantDoor = blocks.lanteaDoor.ref().pushAll(0);
+		//IDefinitionReference decorGoauldDoor = blocks.lanteaDoor.ref().pushAll(1);
+		//IDefinitionReference naquadah = items.lanteaOreItem.ref().pushAll(1, OreType.NAQUADAH.ordinal());
 
-		ItemStack blockGold = new ItemStack(net.minecraft.init.Blocks.gold_block, 1);
-		ItemStack blockIron = new ItemStack(net.minecraft.init.Blocks.iron_block, 1);
-		ItemStack wool = new ItemStack(net.minecraft.init.Blocks.wool, 1);
-		ItemStack stick = new ItemStack(net.minecraft.init.Items.stick, 1);
-		recipes.decorCrafterRecipe = new SimpleRecipeDefinition("decorator", RecipeType.SHAPED, decorator, "000 1  1 ",
-				wool, stick);
-		runtime.registries().recipes().addRecipe(recipes.decorCrafterRecipe);
+		ItemStack blockGold = new ItemStack(net.minecraft.init.Blocks.GOLD_BLOCK, 1);
+		ItemStack blockIron = new ItemStack(net.minecraft.init.Blocks.IRON_BLOCK, 1);
+		ItemStack wool = new ItemStack(net.minecraft.init.Blocks.WOOL, 1);
+		ItemStack stick = new ItemStack(net.minecraft.init.Items.STICK, 1);
+		//recipes.decorCrafterRecipe = new SimpleRecipeDefinition("decorator", RecipeType.SHAPED, decorator, "000 1  1 ",
+		//		wool, stick);
+		//runtime.registries().recipes().addRecipe(recipes.decorCrafterRecipe);
 
-		recipes.decorSetterRecipe = new RecipeProxy("decor_editor", RecipeType.PROXY, DecoratorSetterRecipe.class);
-		runtime.registries().recipes().addRecipe(recipes.decorSetterRecipe);
+		//recipes.decorSetterRecipe = new RecipeProxy("decor_editor", RecipeType.PROXY, DecoratorSetterRecipe.class);
+		//runtime.registries().recipes().addRecipe(recipes.decorSetterRecipe);
 
-		recipes.decorLanteanSteel = new SimpleRecipeDefinition("lantean_steel", RecipeType.SHAPELESS, decorLantSteel
-				.copy().push(0, 16), "01", blockIron, naquadah);
-		runtime.registries().recipes().addRecipe(recipes.decorLanteanSteel);
+		//recipes.decorLanteanSteel = new SimpleRecipeDefinition("lantean_steel", RecipeType.SHAPELESS, decorLantSteel
+		//		.copy().push(0, 16), "01", blockIron, naquadah);
+		//runtime.registries().recipes().addRecipe(recipes.decorLanteanSteel);
 
-		recipes.decorLanteanPatternSteel = new SimpleRecipeDefinition("lantean_pattern_steel", RecipeType.SHAPED,
-				decorLantDecSteel.copy().push(0, 4), "00 00    ", decorLantSteel);
-		runtime.registries().recipes().addRecipe(recipes.decorLanteanPatternSteel);
+		//recipes.decorLanteanPatternSteel = new SimpleRecipeDefinition("lantean_pattern_steel", RecipeType.SHAPED,
+		//		decorLantDecSteel.copy().push(0, 4), "00 00    ", decorLantSteel);
+		//runtime.registries().recipes().addRecipe(recipes.decorLanteanPatternSteel);
 
-		recipes.decorGoauldGold = new SimpleRecipeDefinition("goauld_gold", RecipeType.SHAPELESS, decorGoaGold.copy()
-				.push(0, 16), "01", blockGold, naquadah);
-		runtime.registries().recipes().addRecipe(recipes.decorGoauldGold);
-
-		recipes.decorGoauldDecorGold = new SimpleRecipeDefinition("goauld_decor_gold", RecipeType.SHAPED,
-				decorGoaPatGold.copy().push(0, 4), "00 00    ", decorGoaGold);
-		runtime.registries().recipes().addRecipe(recipes.decorGoauldDecorGold);
-
-		recipes.decorLanteanDoor = new SimpleRecipeDefinition("lantean_door", RecipeType.SHAPED, decorLantDoor,
-				" 00 00 11", decorLantDecSteel.copy().push(0, 4), decorLantSteel);
-		runtime.registries().recipes().addRecipe(recipes.decorLanteanDoor);
-
-		recipes.decorGoauldDoor = new SimpleRecipeDefinition("goauld_door", RecipeType.SHAPED, decorGoauldDoor,
-				" 00 00 11", decorGoaPatGold.copy().push(0, 4), decorGoaGold);
-		runtime.registries().recipes().addRecipe(recipes.decorGoauldDoor);
-	}
+//		recipes.decorGoauldGold = new SimpleRecipeDefinition("goauld_gold", RecipeType.SHAPELESS, decorGoaGold.copy()
+//				.push(0, 16), "01", blockGold, naquadah);
+//		runtime.registries().recipes().addRecipe(recipes.decorGoauldGold);
+//
+//		recipes.decorGoauldDecorGold = new SimpleRecipeDefinition("goauld_decor_gold", RecipeType.SHAPED,
+//				decorGoaPatGold.copy().push(0, 4), "00 00    ", decorGoaGold);
+//		runtime.registries().recipes().addRecipe(recipes.decorGoauldDecorGold);
+//
+//		recipes.decorLanteanDoor = new SimpleRecipeDefinition("lantean_door", RecipeType.SHAPED, decorLantDoor,
+//				" 00 00 11", decorLantDecSteel.copy().push(0, 4), decorLantSteel);
+//		runtime.registries().recipes().addRecipe(recipes.decorLanteanDoor);
+//
+//		recipes.decorGoauldDoor = new SimpleRecipeDefinition("goauld_door", RecipeType.SHAPED, decorGoauldDoor,
+//				" 00 00 11", decorGoaPatGold.copy().push(0, 4), decorGoaGold);
+//		runtime.registries().recipes().addRecipe(recipes.decorGoauldDoor);
+	//}
 
 	/**
 	 * Called during post-initialization

@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 /**
@@ -85,7 +86,7 @@ public class DecoratorSetterRecipe implements IRecipe {
 		Block block = null;
 		for (ItemStack stack : allItems) {
 			Block theBlock = Block.getBlockFromItem(stack.getItem());
-			if (theBlock != null && theBlock.isBlockNormalCube()) {
+			if (theBlock != null && theBlock.isNormalCube(null, null, null)) {
 				blockStack = stack;
 				block = theBlock;
 			}
@@ -112,6 +113,30 @@ public class DecoratorSetterRecipe implements IRecipe {
 	public ItemStack[] getRemainingItems(InventoryCrafting inv) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public IRecipe setRegistryName(ResourceLocation name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResourceLocation getRegistryName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Class<IRecipe> getRegistryType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean canFit(int width, int height) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

@@ -4,7 +4,8 @@
  */
 package lc.api.audio.streaming;
 
-import net.minecraft.client.audio.SoundCategory;
+
+import net.minecraft.util.SoundCategory;
 
 /**
  * Interface for sound servers at runtime.

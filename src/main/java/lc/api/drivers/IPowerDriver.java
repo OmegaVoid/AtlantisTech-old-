@@ -4,6 +4,7 @@
  */
 package lc.api.drivers;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 /**
@@ -21,8 +22,7 @@ public interface IPowerDriver extends IDriver {
 	 *            The direction
 	 * @return If interfacing is allowed
 	 */
-	public boolean canInterface(ForgeDirection direction);
-
+	public boolean canInterface(EnumFacing direction);
 	/**
 	 * @return The quantity of energy stored.
 	 */
