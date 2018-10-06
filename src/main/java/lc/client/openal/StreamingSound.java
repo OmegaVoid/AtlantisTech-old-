@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.net.URL;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import paulscode.sound.SoundSystem;
 import lc.api.audio.streaming.ISound;
 import lc.api.audio.streaming.ISoundPosition;
@@ -150,7 +152,7 @@ public class StreamingSound implements ISound, Comparable<StreamingSound> {
 
 		float d = 0.0F;
 
-		if (position.getWorldObject().equals(clientPlayer.worldObj))
+		if (position.getWorldObject().equals(clientPlayer.world))
 			d = (float) ((Vector3) position.getPositionObject()).sub(new Vector3(clientPlayer)).mag();
 
 		if (d > md) {
@@ -168,8 +170,9 @@ public class StreamingSound implements ISound, Comparable<StreamingSound> {
 		Vector3 j = ((Vector3) position.getPositionObject()).sub(i).div(d);
 		if (nrv > 0.1f)
 			for (int k = 0; k < d; k++) {
-				Block b = clientPlayer.worldObj.getBlock((int) i.x, (int) i.y, (int) i.z);
-				if (b.isOpaqueCube())
+				Block b = (Block) clientPlayer.world.getBlockState(new BlockPos((int) i.x, (int) i.y, (int) i.z));
+				//TODO Use non Deprecated Method
+				if (b.isOpaqueCube((IBlockState) b))
 					nrv *= 0.5F;
 				else
 					nrv *= 0.85F;
