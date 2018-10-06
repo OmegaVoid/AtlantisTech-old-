@@ -67,9 +67,9 @@ public abstract class LCInventory implements ISidedInventory, IConfigure {
 	public ItemStack decrStackSize(int slot, int take) {
 		if (items[slot] == null)
 			return null;
-		if (items[slot].stackSize == 0)
+		if (items[slot].getCount() == 0)
 			return null;
-		return items[slot].splitStack(Math.min(take, items[slot].stackSize));
+		return items[slot].splitStack(Math.min(take, items[slot].getCount()));
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public abstract class LCInventory implements ISidedInventory, IConfigure {
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+	public boolean isUsableByPlayer(EntityPlayer entityplayer) {
 		return true;
 	}
 

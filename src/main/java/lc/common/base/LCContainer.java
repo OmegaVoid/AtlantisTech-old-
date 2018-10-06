@@ -6,7 +6,9 @@ import lc.common.configuration.IConfigure;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
+//import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -73,8 +75,8 @@ public abstract class LCContainer extends Container implements IConfigure {
 
 	@Override
 	public Slot addSlotToContainer(Slot slot) {
-		if (0 > slot.xDisplayPosition || 0 > slot.yDisplayPosition || slot.xDisplayPosition + 16 > xSize
-				|| slot.yDisplayPosition + 16 > ySize)
+		if (0 > slot.xPos || 0 > slot.yPos || slot.xPos + 16 > xSize
+				|| slot.yPos + 16 > ySize)
 			LCLog.warn("Slot index %s in inventory %s is offscreen. Problems may occur!", slot.getSlotIndex(),
 					slot.inventory.getClass().getName());
 		return super.addSlotToContainer(slot);
@@ -89,7 +91,7 @@ public abstract class LCContainer extends Container implements IConfigure {
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		for (int i = 0; i < crafters.size(); i++) {
-			ICrafting crafter = (ICrafting) crafters.get(i);
+			InventoryCrafting crafter = (InventoryCrafting) crafters.get(i);
 			sendStateTo(crafter);
 		}
 	}
@@ -100,7 +102,7 @@ public abstract class LCContainer extends Container implements IConfigure {
 	 * @param crafter
 	 *            The crafter person
 	 */
-	public abstract void sendStateTo(ICrafting crafter);
+	public abstract void sendStateTo(InventoryCrafting crafter);
 
 	@Override
 	public void updateProgressBar(int i, int value) {

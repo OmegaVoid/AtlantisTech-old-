@@ -468,13 +468,14 @@ public abstract class LCTile extends TileEntity implements ITickable, IInventory
 	@Override
 	public void handlePacket(LCPacket packetOf, EntityPlayer player) throws LCNetworkException {
 		if (packetOf instanceof LCTileSync)
-			if (worldObj.isRemote) {
+			if (world.isRemote) {
 				clientDataDirty = false;
 				compound = ((LCTileSync) packetOf).compound;
-				worldObj.markBlockForUpdate(getPos());
+				world.scheduleBlockUpdate(getPos(), getBlockType(), 0,0);
+				//world.markBlockForUpdate(getPos());
 			}
 		if (packetOf instanceof LCClientUpdate)
-			if (!worldObj.isRemote)
+			if (!world.isRemote)
 				sendUpdatesToClient((EntityPlayerMP) player);
 			else
 				throw new LCNetworkException("Can't handle LCClientUpdates on the client!");
@@ -496,8 +497,8 @@ public abstract class LCTile extends TileEntity implements ITickable, IInventory
 	@Override
 	public void update() {
 		Tracer.begin(this);
-		if (worldObj != null)
-			if (worldObj.isRemote) {
+		if (world != null)
+			if (world.isRemote) {
 				Tracer.begin(this, "thinkClient implementation");
 				thinkClient();
 				thinkClientPost();
@@ -589,10 +590,10 @@ public abstract class LCTile extends TileEntity implements ITickable, IInventory
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
+	public boolean isUsableByPlayer(EntityPlayer p_70300_1_) {
 		if (getInventory() == null)
 			return false;
-		return getInventory().isUseableByPlayer(p_70300_1_);
+		return getInventory().isUsableByPlayer(p_70300_1_);
 	}
 
 	@Override
@@ -618,7 +619,7 @@ public abstract class LCTile extends TileEntity implements ITickable, IInventory
 
 	@Override
 	public Packet getDescriptionPacket() {
-		if (worldObj.isRemote)
+		if (world.isRemote)
 			LCRuntime.runtime.network().getPreferredPipe().sendToServer(new LCClientUpdate(new DimensionPos(this)));
 		return null;
 	}
