@@ -4,6 +4,8 @@
  */
 package lc.api.world;
 
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+
 /**
  * Ore type list
  *
@@ -20,10 +22,10 @@ public enum OreType {
 
 	private String tex;
 
-	private IIcon textureOreBlock;
-	private IIcon textureItem;
-	private IIcon textureAlloyItem;
-	private IIcon textureAlloyBlock;
+	private TextureAtlasSprite textureOreBlock;
+	private TextureAtlasSprite textureItem;
+	private TextureAtlasSprite textureAlloyItem;
+	private TextureAtlasSprite textureAlloyBlock;
 
 	private OreType(String tex) {
 		this.tex = tex;
@@ -70,7 +72,7 @@ public enum OreType {
 	 *
 	 * @return The ore texture
 	 */
-	public IIcon getOreTexture() {
+	public TextureAtlasSprite getOreTexture() {
 		return textureOreBlock;
 	}
 
@@ -80,7 +82,7 @@ public enum OreType {
 	 * @param texture
 	 *            The ore texture
 	 */
-	public void setOreTexture(IIcon texture) {
+	public void setOreTexture(TextureAtlasSprite texture) {
 		textureOreBlock = texture;
 	}
 
@@ -89,7 +91,7 @@ public enum OreType {
 	 *
 	 * @return The item texture
 	 */
-	public IIcon getItemTexture() {
+	public TextureAtlasSprite getItemTexture() {
 		return textureItem;
 	}
 
@@ -99,7 +101,7 @@ public enum OreType {
 	 * @param texture
 	 *            The item texture
 	 */
-	public void setItemTexture(IIcon texture) {
+	public void setItemTexture(TextureAtlasSprite texture) {
 		textureItem = texture;
 	}
 
@@ -108,7 +110,7 @@ public enum OreType {
 	 *
 	 * @return The ingot texture
 	 */
-	public IIcon getIngotItemTexture() {
+	public TextureAtlasSprite getIngotItemTexture() {
 		return textureAlloyItem;
 	}
 
@@ -118,7 +120,7 @@ public enum OreType {
 	 * @param texture
 	 *            The ingot texture
 	 */
-	public void setIngotItemTexture(IIcon texture) {
+	public void setIngotItemTexture(TextureAtlasSprite texture) {
 		textureAlloyItem = texture;
 	}
 
@@ -127,7 +129,7 @@ public enum OreType {
 	 *
 	 * @return The itemblock texture
 	 */
-	public IIcon getItemAsBlockTexture() {
+	public TextureAtlasSprite getItemAsBlockTexture() {
 		return textureAlloyBlock;
 	}
 
@@ -137,7 +139,7 @@ public enum OreType {
 	 * @param texture
 	 *            The itemblock texture
 	 */
-	public void setItemAsBlockTexture(IIcon texture) {
+	public void setItemAsBlockTexture(TextureAtlasSprite texture) {
 		textureAlloyBlock = texture;
 	}
 }
