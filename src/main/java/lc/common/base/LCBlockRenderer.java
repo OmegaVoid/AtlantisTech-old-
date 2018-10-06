@@ -219,13 +219,20 @@ public abstract class LCBlockRenderer implements ILanteaCraftRenderer, IConfigur
 	}
 
 	private void renderItemIn2D(Tessellator t, float u1, float v0, float u0, float v1, int w, int h, float p_78439_7_) {
+		BufferBuilder bb = ...; // Set to some value
+		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
+		bb.pos(0, 0, 0).tex(u1, v1).normal(0, 0, 1).endVertex();
+		bb.pos(1, 0, 0).tex(u0, v1).normal(0, 0, 1).endVertex();
+		bb.pos(1, 1, 0).tex(u0, v0).normal(0, 0, 1).endVertex();
+		bb.pos(0, 1, 0).tex(u1, v0).normal(0, 0, 1).endVertex();
+		Tessellator.getInstance().draw();
 		t.startDrawingQuads();
 		t.setNormal(0.0F, 0.0F, 1.0F);
 		t.addVertexWithUV(0.0D, 0.0D, 0.0D, (double) u1, (double) v1);
 		t.addVertexWithUV(1.0D, 0.0D, 0.0D, (double) u0, (double) v1);
 		t.addVertexWithUV(1.0D, 1.0D, 0.0D, (double) u0, (double) v0);
 		t.addVertexWithUV(0.0D, 1.0D, 0.0D, (double) u1, (double) v0);
-		t.draw();
+		t.draw();464
 		t.startDrawingQuads();
 		t.setNormal(0.0F, 0.0F, -1.0F);
 		t.addVertexWithUV(0.0D, 1.0D, (double) (0.0F - p_78439_7_), (double) u1, (double) v0);
