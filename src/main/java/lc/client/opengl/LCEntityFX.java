@@ -1,6 +1,6 @@
 package lc.client.opengl;
 
-import net.minecraft.client.particle.EntityFX;
+//import net.minecraft.client.particle.EntityFX;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 

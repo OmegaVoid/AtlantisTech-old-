@@ -9,11 +9,11 @@ import org.lwjgl.opengl.GL11;
 import lc.LCRuntime;
 import lc.api.event.ITickEventHandler;
 import lc.api.rendering.IParticleMachine;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+//import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+//import cpw.mods.fml.relauncher.Side;
+//import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
+//import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -21,6 +21,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Client-side particle on-demand rendering system
@@ -59,7 +62,7 @@ public class ParticleMachine implements ITickEventHandler, IParticleMachine {
 	}
 
 	private void thinkParticles() {
-		World theWorld = Minecraft.getMinecraft().theWorld;
+		World theWorld = Minecraft.getMinecraft().world;
 		if (theWorld == null)
 			return;
 		int dimension = theWorld.provider.dimensionId;
@@ -85,10 +88,10 @@ public class ParticleMachine implements ITickEventHandler, IParticleMachine {
 	@SubscribeEvent
 	public void renderParticles(RenderWorldLastEvent event) {
 		float frame = event.partialTicks;
-		World theWorld = Minecraft.getMinecraft().theWorld;
+		World theWorld = Minecraft.getMinecraft().world;
 		if (theWorld == null)
 			return;
-		Entity player = Minecraft.getMinecraft().thePlayer;
+		Entity player = Minecraft.getMinecraft().player;
 		int dimension = theWorld.provider.dimensionId;
 		GL11.glPushMatrix();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

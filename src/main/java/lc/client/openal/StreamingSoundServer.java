@@ -8,16 +8,18 @@ import java.util.Map.Entry;
 import java.util.PriorityQueue;
 import java.util.Vector;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+//import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import paulscode.sound.SoundSystem;
 import paulscode.sound.SoundSystemConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SoundCategory;
+//import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.audio.SoundManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import lc.api.audio.streaming.ISound;
 import lc.api.audio.streaming.ISoundPosition;
 import lc.api.audio.streaming.ISoundProperties;
@@ -213,7 +215,7 @@ public class StreamingSoundServer implements ISoundServer {
 			return;
 		masterVolume = Minecraft.getMinecraft().gameSettings.getSoundLevel(SoundCategory.MASTER);
 		Vector<SoundOwner> purge = new Vector<SoundOwner>();
-		EntityPlayer client = Minecraft.getMinecraft().thePlayer;
+		EntityPlayer client = Minecraft.getMinecraft().player;
 		if (client == null)
 			purge.addAll(sounds.keySet());
 		else {

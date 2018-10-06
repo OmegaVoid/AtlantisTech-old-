@@ -78,7 +78,7 @@ public class HintProviderClient extends HintProviderServer {
 		entityRenderingHook = new LCEntityRenderPipeline();
 		soundController = new ClientSoundController();
 		particleMachine = new ParticleMachine();
-		RenderingRegistry.registerBlockHandler(
+		RenderingRegistry.registerEntityRenderingHandler(
 				blockRenderingHook.getRenderId(), blockRenderingHook);
 	}
 
@@ -138,7 +138,7 @@ public class HintProviderClient extends HintProviderServer {
 		if (definition.getItem() != null
 				&& definition.getItem() instanceof LCItem) {
 			LCItem theItem = (LCItem) definition.getItem();
-			MinecraftForgeClient.registerItemRenderer(theItem,
+			MinecraftForgeClient.getItemRenderer(theItem,
 					itemRenderingHook);
 		}
 
