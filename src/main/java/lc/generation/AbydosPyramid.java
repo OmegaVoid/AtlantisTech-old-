@@ -9,6 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 
 /**
  * Abydos pyramid scattered feature generator implementation.
@@ -79,7 +80,7 @@ public class AbydosPyramid extends LCFeatureStart {
 		public boolean addComponentParts(World par1World, Random par2Random,
 				StructureBoundingBox par3StructureBoundingBox) {
 			fillWithBlocks(par1World, par3StructureBoundingBox, 0, -4, 0, scatteredFeatureSizeX - 1, 0,
-					scatteredFeatureSizeZ - 1, Blocks.sandstone, Blocks.sandstone, false);
+					scatteredFeatureSizeZ - 1, Blocks.SANDSTONE, Blocks.SANDSTONE, false);
 			int i;
 
 			lc.api.init.Blocks modBlocks = LCRuntime.runtime.blocks();
@@ -89,7 +90,7 @@ public class AbydosPyramid extends LCFeatureStart {
 						scatteredFeatureSizeZ - 1 - i, modBlocks.lanteaDecorBlock.getBlock(), 4,
 						modBlocks.lanteaDecorBlock.getBlock(), 4, false);
 				fillWithBlocks(par1World, par3StructureBoundingBox, i + 1, i, i + 1, scatteredFeatureSizeX - 2 - i, i,
-						scatteredFeatureSizeZ - 2 - i, Blocks.air, Blocks.air, false);
+						scatteredFeatureSizeZ - 2 - i, Blocks.AIR, Blocks.AIR, false);
 			}
 
 			int j;
@@ -97,9 +98,21 @@ public class AbydosPyramid extends LCFeatureStart {
 			for (i = 0; i < scatteredFeatureSizeX; ++i)
 				for (j = 0; j < scatteredFeatureSizeZ; ++j) {
 					byte b0 = -5;
-					func_151554_b(par1World, Blocks.sandstone, 0, i, b0, j, par3StructureBoundingBox);
+					func_151554_b(par1World, Blocks.SANDSTONE, 0, i, b0, j, par3StructureBoundingBox);
 				}
 			return true;
+		}
+
+		@Override
+		protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager p_143011_2_) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 }
