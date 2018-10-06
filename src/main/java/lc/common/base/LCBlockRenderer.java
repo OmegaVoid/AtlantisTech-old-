@@ -10,14 +10,19 @@ import lc.common.util.math.Trans3;
 import lc.common.util.math.Vector3;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderBlocks;
+//import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.BlockModelRenderer;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureUtil;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.client.IRenderHandler;
+import net.minecraft.client.renderer.BufferBuilder;
+//import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Internal block renderer base class.
@@ -51,7 +56,7 @@ public abstract class LCBlockRenderer implements ILanteaCraftRenderer, IConfigur
 	 * @return If the rendering was completed
 	 * @see LCBlockRenderer#getParent()
 	 */
-	public abstract boolean renderInventoryBlock(Block block, RenderBlocks renderer, int metadata);
+	public abstract boolean renderInventoryBlock(Block block, BlockModelRenderer renderer, int metadata);
 
 	/**
 	 * Render a block in the world. If this operation cannot be completed by the
@@ -74,7 +79,7 @@ public abstract class LCBlockRenderer implements ILanteaCraftRenderer, IConfigur
 	 * @return If the rendering was completed
 	 * @see LCBlockRenderer#getParent()
 	 */
-	public abstract boolean renderWorldBlock(Block block, RenderBlocks renderer, IBlockAccess world, int x, int y, int z);
+	public abstract boolean renderWorldBlock(Block block, BlockModelRenderer renderer, IBlockAccess world, int x, int y, int z);
 
 	/**
 	 * Asks if this block renderer renders blocks in 3D or 2D inside
@@ -104,7 +109,7 @@ public abstract class LCBlockRenderer implements ILanteaCraftRenderer, IConfigur
 	 * @param rb
 	 *            The renderblocks instance
 	 */
-	public void renderDefaultInventoryBlock(Block block, int metadata, RenderBlocks rb) {
+	public void renderDefaultInventoryBlock(Block block, int metadata, BlockModelRenderer rb) {
 		renderDefaultInventoryBlock(block, metadata, new Trans3(0, 0, 0), rb);
 	}
 
@@ -120,14 +125,15 @@ public abstract class LCBlockRenderer implements ILanteaCraftRenderer, IConfigur
 	 * @param rb
 	 *            The renderblocks instance
 	 */
-	public void renderDefaultInventoryBlock(Block block, int metadata, Trans3 trans, RenderBlocks rb) {
+	public void renderDefaultInventoryBlock(Block block, int metadata, Trans3 trans, BlockModelRenderer rb) {
 		setUpTextureOverride(rb);
 		setColorMultiplier(0xffffff);
-		Tessellator tess = Tessellator.instance;
-		tess.setColorOpaque_F(1, 1, 1);
-		tess.startDrawingQuads();
+		Tessellator tess = Tessellator.getInstance();
+		BufferBuilder buff = tess.getBuffer();
+		buff.setColorOpaque_F(1, 1, 1);
+		buff.begin(7, DefaultVertexFormats.BLOCK);
 		GL11.glTranslatef(0.0f, -0.1f, 0.0f);
-		renderCube(tess, trans, null, block, 0, 0, 0, metadata, 0xf000f0);
+		renderCube(buff, trans, null, block, 0, 0, 0, metadata, 0xf000f0);
 		tess.draw();
 	}
 
@@ -148,7 +154,7 @@ public abstract class LCBlockRenderer implements ILanteaCraftRenderer, IConfigur
 	 *            The renderblocks instance
 	 * @return If rendering was a success
 	 */
-	public boolean renderDefaultWorldBlock(IBlockAccess world, int x, int y, int z, Block block, RenderBlocks rb) {
+	public boolean renderDefaultWorldBlock(IBlockAccess world, int x, int y, int z, Block block, BlockModelRenderer rb) {
 		return renderDefaultWorldBlock(world, x, y, z, block, new Trans3(x + 0.5, y + 0.5, z + 0.5), rb);
 	}
 
@@ -172,10 +178,10 @@ public abstract class LCBlockRenderer implements ILanteaCraftRenderer, IConfigur
 	 * @return If rendering was a success
 	 */
 	public boolean renderDefaultWorldBlock(IBlockAccess world, int x, int y, int z, Block block, Trans3 trans,
-			RenderBlocks rb) {
+			BlockModelRenderer rb) {
 		setUpTextureOverride(rb);
 		setColorMultiplier(block.colorMultiplier(world, x, y, z));
-		Tessellator tess = Tessellator.instance;
+		Tessellator tess = Tessellator.getInstance();
 		tess.setColorOpaque_F(1, 1, 1);
 		renderCube(tess, trans, world, block, x, y, z, world.getBlockMetadata(x, y, z),
 				block.getMixedBrightnessForBlock(world, x, y, z));
@@ -189,13 +195,13 @@ public abstract class LCBlockRenderer implements ILanteaCraftRenderer, IConfigur
 	 *            The itemstack to render
 	 */
 	public void renderDefaultItem(ItemStack stack) {
-		IIcon iicon = stack.getItem().getIconFromDamage(stack.getItemDamage());
+		TextureAtlasSprite iicon = stack.getItem().getIconFromDamage(stack.getItemDamage());
 		if (iicon == null)
 			return;
 		TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
 		texturemanager.bindTexture(texturemanager.getResourceLocation(stack.getItemSpriteNumber()));
 		TextureUtil.func_152777_a(false, false, 1.0F);
-		Tessellator tessellator = Tessellator.instance;
+		Tessellator tessellator = Tessellator.getInstance();
 		float u0 = iicon.getMinU(), u1 = iicon.getMaxU();
 		float v0 = iicon.getMinV(), v1 = iicon.getMaxV();
 		float f4 = 0.0F;
@@ -295,10 +301,11 @@ public abstract class LCBlockRenderer implements ILanteaCraftRenderer, IConfigur
 		cmb = (color & 0xff) / 255.0F;
 	}
 
-	private void setUpTextureOverride(RenderBlocks rb) {
+	private void setUpTextureOverride(BlockModelRenderer rb) {
 		textureOverridden = false;
 		if (rb != null) {
-			IIcon icon = rb.overrideBlockTexture;
+			TextureAtlasSprite icon = rb.overrideBlockTexture;
+			
 			if (icon != null) {
 				useIcon(icon);
 				textureOverridden = true;
@@ -306,14 +313,14 @@ public abstract class LCBlockRenderer implements ILanteaCraftRenderer, IConfigur
 		}
 	}
 
-	private void selectTile(IIcon icon) {
+	private void selectTile(TextureAtlasSprite icon) {
 		if (!textureOverridden)
 			useIcon(icon);
 		us = (u1 - u0) / 16;
 		vs = (v1 - v0) / 16;
 	}
 
-	private void useIcon(IIcon icon) {
+	private void useIcon(TextureAtlasSprite icon) {
 		u0 = icon.getMinU();
 		v0 = icon.getMinV();
 		u1 = icon.getMaxU();
@@ -351,7 +358,7 @@ public abstract class LCBlockRenderer implements ILanteaCraftRenderer, IConfigur
 	 * @param brightness
 	 *            The block brightness
 	 */
-	protected void renderCube(Tessellator tess, Trans3 t, IBlockAccess world, Block block, int x, int y, int z,
+	protected void renderCube(BufferBuilder tess, Trans3 t, IBlockAccess world, Block block, int x, int y, int z,
 			int data, int brightness) {
 		for (int i = 0; i < 6; i++) {
 			selectTile(block.getIcon(i, data));
@@ -360,24 +367,25 @@ public abstract class LCBlockRenderer implements ILanteaCraftRenderer, IConfigur
 				Vector3 p = t.p(d.offsetX, d.offsetY, d.offsetZ);
 				tess.setBrightness(block.getMixedBrightnessForBlock(world, p.fx(), p.fy(), p.fz()));
 			} else
+				tess
 				tess.setBrightness(brightness);
 			cubeFace(tess, t.translate(0.5d, 0.5d, 0.5d), cubeMap[i]);
 		}
 	}
 
-	private void setNormal(Tessellator tess, Trans3 t, double nx, double ny, double nz, double shade) {
+	private void setNormal(BufferBuilder tess, Trans3 t, double nx, double ny, double nz, double shade) {
 		Vector3 n = t.v(nx, ny, nz);
 		float bm = (float) (shade * (0.6 * n.x * n.x + 0.8 * n.z * n.z + (n.y > 0 ? 1 : 0.5) * n.y * n.y));
 		tess.setNormal((float) n.x, (float) n.y, (float) n.z);
 		tess.setColorOpaque_F(bm * cmr, bm * cmg, bm * cmb);
 	}
 
-	private void cubeFace(Tessellator tess, Trans3 t, double[] c) {
+	private void cubeFace(BufferBuilder tess, Trans3 t, double[] c) {
 		setNormal(tess, t, c[9], c[10], c[11], 1.0);
 		face(tess, t, c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8], 0, 0, 16, 16);
 	}
 
-	private void face(Tessellator tess, Trans3 t, double x, double y, double z, double dx1, double dy1, double dz1,
+	private void face(BufferBuilder tess, Trans3 t, double x, double y, double z, double dx1, double dy1, double dz1,
 			double dx2, double dy2, double dz2, double u, double v, double du, double dv) {
 		vertex(tess, t, x, y, z, u, v);
 		vertex(tess, t, x + dx1, y + dy1, z + dz1, u, v + dv);
@@ -385,9 +393,10 @@ public abstract class LCBlockRenderer implements ILanteaCraftRenderer, IConfigur
 		vertex(tess, t, x + dx2, y + dy2, z + dz2, u + du, v);
 	}
 
-	private void vertex(Tessellator tess, Trans3 t, double x, double y, double z, double u, double v) {
+	private void vertex(BufferBuilder tess, Trans3 t, double x, double y, double z, double u, double v) {
 		Vector3 p = t.p(x, y, z);
 		tess.addVertexWithUV(p.x, p.y, p.z, u0 + u * us, v0 + v * vs);
+		tess.begin(0, format);
 	}
 
 }
