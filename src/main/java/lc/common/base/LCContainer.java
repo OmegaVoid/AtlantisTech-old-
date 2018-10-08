@@ -91,6 +91,7 @@ public abstract class LCContainer extends Container implements IConfigure {
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 		for (int i = 0; i < crafters.size(); i++) {
+			//TODO: Major Update Problem
 			InventoryCrafting crafter = (InventoryCrafting) crafters.get(i);
 			sendStateTo(crafter);
 		}

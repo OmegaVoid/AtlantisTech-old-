@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 import lc.LanteaCraft;
 import lc.common.LCLog;
-import lc.common.util.math.ChunkPos;
-import net.minecraft.world.ChunkCoordIntPair;
+//import lc.common.util.math.ChunkPos;
+//import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
@@ -38,8 +39,8 @@ public class LCLoadedChunkManager {
 		 *            The chunk position to load
 		 */
 		public void loadChunk(ChunkPos chunk) {
-			LCLog.debug("Forcing chunk: [%s, %s]", chunk.cx, chunk.cz);
-			ForgeChunkManager.forceChunk(ticket, new ChunkCoordIntPair(chunk.cx, chunk.cz));
+			LCLog.debug("Forcing chunk: [%s, %s]", chunk.x, chunk.z);
+			ForgeChunkManager.forceChunk(ticket, new ChunkPos(chunk.x, chunk.z));
 			loaded.add(chunk);
 		}
 
@@ -60,7 +61,7 @@ public class LCLoadedChunkManager {
 		public void loadChunkRange(ChunkPos origin, int ix, int iz, int mx, int mz) {
 			for (int x = ix; x <= mx; x++)
 				for (int z = iz; z <= mz; z++)
-					loadChunk(new ChunkPos(origin.cx + x, origin.cz + z));
+					loadChunk(new ChunkPos(origin.x + x, origin.z + z));
 		}
 
 		/**
@@ -69,7 +70,7 @@ public class LCLoadedChunkManager {
 		public void unload() {
 			LCLog.debug("Releasing all forced chunks");
 			for (ChunkPos chunk : loaded)
-				ForgeChunkManager.unforceChunk(ticket, new ChunkCoordIntPair(chunk.cx, chunk.cz));
+				ForgeChunkManager.unforceChunk(ticket, new ChunkPos(chunk.x, chunk.z));
 			loaded.clear();
 		}
 	}

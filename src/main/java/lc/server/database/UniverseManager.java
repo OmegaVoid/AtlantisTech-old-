@@ -45,7 +45,7 @@ public class UniverseManager {
 	 *            The server event.
 	 */
 	public void loadUniverse(FMLServerStartingEvent event) {
-		WorldServer overworld = event.getServer().worldServerForDimension(0);
+		WorldServer overworld = event.getServer().getWorld(0);
 		File cwd = overworld.getSaveHandler().getWorldDirectory();
 		File dataDir = new File(cwd, "lanteacraft");
 		LCLog.debug("Mounting universe storage: %s", dataDir);

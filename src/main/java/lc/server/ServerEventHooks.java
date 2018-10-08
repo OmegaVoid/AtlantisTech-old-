@@ -49,7 +49,7 @@ public class ServerEventHooks {
 	@SubscribeEvent
 	public void onWorldUnload(WorldEvent.Unload event) {
 		serverHints.universeMgr.unloadGalaxy(event);
-		serverHints.stargateMgr.closeConnectionsIn(event.world.provider.dimensionId);
+		serverHints.stargateMgr.closeConnectionsIn(event.getWorld().provider.getDimension());
 	}
 
 	@SubscribeEvent

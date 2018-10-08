@@ -69,7 +69,7 @@ public class StargateConnection {
 		this.dest = what;
 		this.state = StargateState.IDLE;
 		this.ticketFrom = ((HintProviderServer) LCRuntime.runtime.hints()).chunkLoaders().requestTicket(
-				tileFrom.getWorldObj());
+				tileFrom.getWorld());
 		this.maxConnectionAge = maxAge;
 		this.maxTimeout = timeout;
 		ChunkPos origin = new ChunkPos(tileFrom);
@@ -117,7 +117,7 @@ public class StargateConnection {
 		if (tileTo != null)
 			return;
 		try {
-			WorldServer world = MinecraftServer.getServer().worldServerForDimension(dest.dimension);
+			WorldServer world = MinecraftServer.getServer().getWorld(dest.dimension);
 			if (world == null) {
 				LCLog.debug("Can't find world %s", dest.dimension);
 				return;
@@ -132,7 +132,7 @@ public class StargateConnection {
 				return;
 			}
 
-			for (Object o : chunk.chunkTileEntityMap.values())
+			for (Object o : chunk.getTileEntityMap().values())
 				if (o instanceof TileStargateBase) {
 					TileStargateBase tile = (TileStargateBase) o;
 					if (tile.getState() == MultiblockState.FORMED && !tile.hasConnectionState()) {

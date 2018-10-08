@@ -25,7 +25,7 @@ public class ChunkPos {
 	 *            The tile entity
 	 */
 	public ChunkPos(TileEntity te) {
-		this(te.getWorld().provider.getDimensionId(), te.getPos().getX() >> 4, te.getPos().getZ() >> 4);
+		this(te.getWorld().provider.getDimension(), te.getPos().getX() >> 4, te.getPos().getZ() >> 4);
 	}
 
 	/**

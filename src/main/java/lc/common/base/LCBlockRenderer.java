@@ -133,7 +133,7 @@ public abstract class LCBlockRenderer implements ILanteaCraftRenderer, IConfigur
 		buff.setColorOpaque_F(1, 1, 1);
 		buff.begin(7, DefaultVertexFormats.BLOCK);
 		GL11.glTranslatef(0.0f, -0.1f, 0.0f);
-		renderCube(buff, trans, null, block, 0, 0, 0, metadata, 0xf000f0);
+		renderCube(tess, trans, null, block, 0, 0, 0, metadata, 0xf000f0);
 		tess.draw();
 	}
 
@@ -219,31 +219,24 @@ public abstract class LCBlockRenderer implements ILanteaCraftRenderer, IConfigur
 	}
 
 	private void renderItemIn2D(Tessellator t, float u1, float v0, float u0, float v1, int w, int h, float p_78439_7_) {
-		BufferBuilder bb = ...; // Set to some value
+		BufferBuilder bb = t.getBuffer();
 		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
 		bb.pos(0, 0, 0).tex(u1, v1).normal(0, 0, 1).endVertex();
 		bb.pos(1, 0, 0).tex(u0, v1).normal(0, 0, 1).endVertex();
 		bb.pos(1, 1, 0).tex(u0, v0).normal(0, 0, 1).endVertex();
 		bb.pos(0, 1, 0).tex(u1, v0).normal(0, 0, 1).endVertex();
-		Tessellator.getInstance().draw();
-		t.startDrawingQuads();
-		t.setNormal(0.0F, 0.0F, 1.0F);
-		t.addVertexWithUV(0.0D, 0.0D, 0.0D, (double) u1, (double) v1);
-		t.addVertexWithUV(1.0D, 0.0D, 0.0D, (double) u0, (double) v1);
-		t.addVertexWithUV(1.0D, 1.0D, 0.0D, (double) u0, (double) v0);
-		t.addVertexWithUV(0.0D, 1.0D, 0.0D, (double) u1, (double) v0);
-		t.draw();464
-		t.startDrawingQuads();
-		t.setNormal(0.0F, 0.0F, -1.0F);
-		t.addVertexWithUV(0.0D, 1.0D, (double) (0.0F - p_78439_7_), (double) u1, (double) v0);
-		t.addVertexWithUV(1.0D, 1.0D, (double) (0.0F - p_78439_7_), (double) u0, (double) v0);
-		t.addVertexWithUV(1.0D, 0.0D, (double) (0.0F - p_78439_7_), (double) u0, (double) v1);
-		t.addVertexWithUV(0.0D, 0.0D, (double) (0.0F - p_78439_7_), (double) u1, (double) v1);
+		t.draw();
+		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
+		bb.pos(0, 1, 0.0F - p_78439_7_).tex(u1, v0).normal(0, 0, -1);
+		bb.pos(1, 1, 0.0F - p_78439_7_).tex(u0, v0).normal(0, 0, -1);
+		bb.pos(1, 0, 0.0F - p_78439_7_).tex(u0, v1).normal(0, 0, -1);
+		bb.pos(0, 0, 0.0F - p_78439_7_).tex(u1, v1).normal(0, 0, -1);
 		t.draw();
 		float f5 = 0.5F * (u1 - u0) / (float) w;
 		float f6 = 0.5F * (v1 - v0) / (float) h;
-		t.startDrawingQuads();
-		t.setNormal(-1.0F, 0.0F, 0.0F);
+		//t.startDrawingQuads();
+		//t.setNormal(-1.0F, 0.0F, 0.0F);
+		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
 		int k;
 		float f7;
 		float f8;
@@ -251,52 +244,56 @@ public abstract class LCBlockRenderer implements ILanteaCraftRenderer, IConfigur
 		for (k = 0; k < w; ++k) {
 			f7 = (float) k / (float) w;
 			f8 = u1 + (u0 - u1) * f7 - f5;
-			t.addVertexWithUV((double) f7, 0.0D, (double) (0.0F - p_78439_7_), (double) f8, (double) v1);
-			t.addVertexWithUV((double) f7, 0.0D, 0.0D, (double) f8, (double) v1);
-			t.addVertexWithUV((double) f7, 1.0D, 0.0D, (double) f8, (double) v0);
-			t.addVertexWithUV((double) f7, 1.0D, (double) (0.0F - p_78439_7_), (double) f8, (double) v0);
+			bb.pos((double) f7, 0.0D, (double) (0.0F - p_78439_7_)).tex((double) f8, (double) v1).normal(-1.0F, 0.0F, 0.0F).endVertex();
+			bb.pos((double) f7, 0.0D, 0.0D).tex((double) f8, (double) v1).normal(-1.0F, 0.0F, 0.0F).endVertex();
+			bb.pos((double) f7, 1.0D, 0.0D).tex((double) f8, (double) v1).normal(-1.0F, 0.0F, 0.0F).endVertex();
+			bb.pos((double) f7, 1.0D, (double) (0.0F - p_78439_7_)).tex((double) f8, (double) v0).normal(-1.0F, 0.0F, 0.0F).endVertex();
 		}
 
 		t.draw();
-		t.startDrawingQuads();
-		t.setNormal(1.0F, 0.0F, 0.0F);
+		//t.startDrawingQuads();
+		//t.setNormal(1.0F, 0.0F, 0.0F);
+		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
 		float f9;
 
 		for (k = 0; k < w; ++k) {
 			f7 = (float) k / (float) w;
 			f8 = u1 + (u0 - u1) * f7 - f5;
 			f9 = f7 + 1.0F / (float) w;
-			t.addVertexWithUV((double) f9, 1.0D, (double) (0.0F - p_78439_7_), (double) f8, (double) v0);
-			t.addVertexWithUV((double) f9, 1.0D, 0.0D, (double) f8, (double) v0);
-			t.addVertexWithUV((double) f9, 0.0D, 0.0D, (double) f8, (double) v1);
-			t.addVertexWithUV((double) f9, 0.0D, (double) (0.0F - p_78439_7_), (double) f8, (double) v1);
+			//t.addVertexWithUV((double) f9, 1.0D, (double) (0.0F - p_78439_7_), (double) f8, (double) v0);
+			//t.addVertexWithUV((double) f9, 1.0D, 0.0D, (double) f8, (double) v0);
+			//t.addVertexWithUV((double) f9, 0.0D, 0.0D, (double) f8, (double) v1);
+			//t.addVertexWithUV((double) f9, 0.0D, (double) (0.0F - p_78439_7_), (double) f8, (double) v1);
 		}
 
 		t.draw();
-		t.startDrawingQuads();
-		t.setNormal(0.0F, 1.0F, 0.0F);
+		//t.startDrawingQuads();
+		//t.setNormal(0.0F, 1.0F, 0.0F);
+		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
 
 		for (k = 0; k < h; ++k) {
 			f7 = (float) k / (float) h;
 			f8 = v1 + (v0 - v1) * f7 - f6;
 			f9 = f7 + 1.0F / (float) h;
-			t.addVertexWithUV(0.0D, (double) f9, 0.0D, (double) u1, (double) f8);
-			t.addVertexWithUV(1.0D, (double) f9, 0.0D, (double) u0, (double) f8);
-			t.addVertexWithUV(1.0D, (double) f9, (double) (0.0F - p_78439_7_), (double) u0, (double) f8);
-			t.addVertexWithUV(0.0D, (double) f9, (double) (0.0F - p_78439_7_), (double) u1, (double) f8);
+			//t.addVertexWithUV(0.0D, (double) f9, 0.0D, (double) u1, (double) f8);
+//			t.addVertexWithUV(1.0D, (double) f9, 0.0D, (double) u0, (double) f8);
+//			t.addVertexWithUV(1.0D, (double) f9, (double) (0.0F - p_78439_7_), (double) u0, (double) f8);
+//			t.addVertexWithUV(0.0D, (double) f9, (double) (0.0F - p_78439_7_), (double) u1, (double) f8);
 		}
 
 		t.draw();
-		t.startDrawingQuads();
-		t.setNormal(0.0F, -1.0F, 0.0F);
+//		t.startDrawingQuads();
+//		t.setNormal(0.0F, -1.0F, 0.0F);
+		bb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_NORMAL);
 
 		for (k = 0; k < h; ++k) {
 			f7 = (float) k / (float) h;
 			f8 = v1 + (v0 - v1) * f7 - f6;
-			t.addVertexWithUV(1.0D, (double) f7, 0.0D, (double) u0, (double) f8);
-			t.addVertexWithUV(0.0D, (double) f7, 0.0D, (double) u1, (double) f8);
-			t.addVertexWithUV(0.0D, (double) f7, (double) (0.0F - p_78439_7_), (double) u1, (double) f8);
-			t.addVertexWithUV(1.0D, (double) f7, (double) (0.0F - p_78439_7_), (double) u0, (double) f8);
+//			t.addVertexWithUV(1.0D, (double) f7, 0.0D, (double) u0, (double) f8);
+//			t.addVertexWithUV(0.0D, (double) f7, 0.0D, (double) u1, (double) f8);
+//			t.addVertexWithUV(0.0D, (double) f7, (double) (0.0F - p_78439_7_), (double) u1, (double) f8);
+//			t.addVertexWithUV(1.0D, (double) f7, (double) (0.0F - p_78439_7_), (double) u0, (double) f8);
+			
 		}
 
 		t.draw();
@@ -365,7 +362,7 @@ public abstract class LCBlockRenderer implements ILanteaCraftRenderer, IConfigur
 	 * @param brightness
 	 *            The block brightness
 	 */
-	protected void renderCube(BufferBuilder tess, Trans3 t, IBlockAccess world, Block block, int x, int y, int z,
+	protected void renderCube(Tessellator tess, Trans3 t, IBlockAccess world, Block block, int x, int y, int z,
 			int data, int brightness) {
 		for (int i = 0; i < 6; i++) {
 			selectTile(block.getIcon(i, data));
@@ -374,36 +371,37 @@ public abstract class LCBlockRenderer implements ILanteaCraftRenderer, IConfigur
 				Vector3 p = t.p(d.offsetX, d.offsetY, d.offsetZ);
 				tess.setBrightness(block.getMixedBrightnessForBlock(world, p.fx(), p.fy(), p.fz()));
 			} else
-				tess
 				tess.setBrightness(brightness);
 			cubeFace(tess, t.translate(0.5d, 0.5d, 0.5d), cubeMap[i]);
 		}
 	}
 
-	private void setNormal(BufferBuilder tess, Trans3 t, double nx, double ny, double nz, double shade) {
+	private void setNormal(Tessellator tess, Trans3 t, double nx, double ny, double nz, double shade) {
 		Vector3 n = t.v(nx, ny, nz);
 		float bm = (float) (shade * (0.6 * n.x * n.x + 0.8 * n.z * n.z + (n.y > 0 ? 1 : 0.5) * n.y * n.y));
-		tess.setNormal((float) n.x, (float) n.y, (float) n.z);
-		tess.setColorOpaque_F(bm * cmr, bm * cmg, bm * cmb);
+		//tess.setNormal((float) n.x, (float) n.y, (float) n.z);
+		//tess.setColorOpaque_F(bm * cmr, bm * cmg, bm * cmb);
 	}
 
-	private void cubeFace(BufferBuilder tess, Trans3 t, double[] c) {
-		setNormal(tess, t, c[9], c[10], c[11], 1.0);
-		face(tess, t, c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8], 0, 0, 16, 16);
+	private void cubeFace(Tessellator tess, Trans3 t, double[] c) {
+		//setNormal(tess, t, c[9], c[10], c[11], 1.0);
+		face(tess, t, c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7], c[8], 0, 0, 16, 16,c[9], c[10], c[11]);
 	}
 
-	private void face(BufferBuilder tess, Trans3 t, double x, double y, double z, double dx1, double dy1, double dz1,
-			double dx2, double dy2, double dz2, double u, double v, double du, double dv) {
-		vertex(tess, t, x, y, z, u, v);
-		vertex(tess, t, x + dx1, y + dy1, z + dz1, u, v + dv);
-		vertex(tess, t, x + dx1 + dx2, y + dy1 + dy2, z + dz1 + dz2, u + du, v + dv);
-		vertex(tess, t, x + dx2, y + dy2, z + dz2, u + du, v);
+	private void face(Tessellator tess, Trans3 t, double x, double y, double z, double dx1, double dy1, double dz1,
+			double dx2, double dy2, double dz2, double u, double v, double du, double dv, double nx, double ny, double nz) {
+		vertex(tess, t, x, y, z, u, v, nx, ny, nz);
+		vertex(tess, t, x + dx1, y + dy1, z + dz1, u, v + dv, nx, ny, nz);
+		vertex(tess, t, x + dx1 + dx2, y + dy1 + dy2, z + dz1 + dz2, u + du, v + dv, nx, ny, nz);
+		vertex(tess, t, x + dx2, y + dy2, z + dz2, u + du, v, nx, ny, nz);
 	}
 
-	private void vertex(BufferBuilder tess, Trans3 t, double x, double y, double z, double u, double v) {
+	private void vertex(Tessellator tess, Trans3 t, double x, double y, double z, double u, double v, double nx , double ny, double nz) {
+		BufferBuilder buff = tess.getBuffer();
 		Vector3 p = t.p(x, y, z);
-		tess.addVertexWithUV(p.x, p.y, p.z, u0 + u * us, v0 + v * vs);
-		tess.begin(0, format);
+		//tess.addVertexWithUV(p.x, p.y, p.z, u0 + u * us, v0 + v * vs);
+		buff.pos(p.x, p.y, p.z).tex(u0 + u * us, v0 + v * vs).normal((float) nx, (float) ny, (float) nz).endVertex();
+		buff.begin(0, DefaultVertexFormats.POSITION_TEX_NORMAL);
 	}
 
 }
