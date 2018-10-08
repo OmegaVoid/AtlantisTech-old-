@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+//import net.minecraft.util.Vec3;
 
 import org.lwjgl.opengl.GL11;
 
@@ -181,6 +182,7 @@ public class WavefrontModel {
 		 *            The texture coordinate offset
 		 */
 		public void addFaceForRender(Tessellator tessellator, float textureOffset) {
+			BufferBuilder buff = tessellator.getBuffer();
 			if (faceNormal == null)
 				faceNormal = calculateFaceNormal();
 			tessellator.setNormal(faceNormal.x, faceNormal.y, faceNormal.z);
@@ -207,6 +209,8 @@ public class WavefrontModel {
 						offsetV = -offsetV;
 					tessellator.addVertexWithUV(vertices[i].x, vertices[i].y, vertices[i].z, texCoords[i].u + offsetU,
 							texCoords[i].v + offsetV);
+					buff.putNormal(x, y, z);
+					
 				} else
 					tessellator.addVertex(vertices[i].x, vertices[i].y, vertices[i].z);
 		}

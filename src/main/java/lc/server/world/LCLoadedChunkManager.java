@@ -58,10 +58,10 @@ public class LCLoadedChunkManager {
 		 * @param mz
 		 *            The delta z-coordinate
 		 */
-		public void loadChunkRange(ChunkPos origin, int ix, int iz, int mx, int mz) {
+		public void loadChunkRange(lc.common.util.math.ChunkPos origin, int ix, int iz, int mx, int mz) {
 			for (int x = ix; x <= mx; x++)
 				for (int z = iz; z <= mz; z++)
-					loadChunk(new ChunkPos(origin.x + x, origin.z + z));
+					loadChunk(new ChunkPos(origin.cx + x, origin.cz + z));
 		}
 
 		/**
