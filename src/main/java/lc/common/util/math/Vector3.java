@@ -3,9 +3,11 @@ package lc.common.util.math;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+//import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+//import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 
 /**
  * Represents a Vector in three-dimensional space.
@@ -111,8 +113,8 @@ public class Vector3 {
 	 * @param v
 	 *            The Minecraft Vec3 object.
 	 */
-	public Vector3(Vec3 v) {
-		this(v.xCoord, v.yCoord, v.zCoord);
+	public Vector3(Vec3d v) {
+		this(v.x, v.y, v.z);
 	}
 
 	/**
@@ -168,7 +170,7 @@ public class Vector3 {
 	 * @return An AABB
 	 */
 	public static AxisAlignedBB makeAABB(Vector3 min, Vector3 max) {
-		return AxisAlignedBB.fromBounds(Math.min(min.x, max.x), Math.min(min.y, max.y), Math.min(min.z, max.z),
+		return new AxisAlignedBB(Math.min(min.x, max.x), Math.min(min.y, max.y), Math.min(min.z, max.z),
 				Math.max(max.x, min.x), Math.max(max.y, min.y), Math.max(max.z, min.z));
 	}
 
@@ -177,8 +179,8 @@ public class Vector3 {
 	 *
 	 * @return A Minecraft Vec3 object.
 	 */
-	public Vec3 toVec3() {
-		return new Vec3(x, y, z);
+	public Vec3d toVec3() {
+		return new Vec3d(x, y, z);
 	}
 
 	/**

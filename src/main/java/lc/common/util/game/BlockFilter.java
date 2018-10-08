@@ -2,7 +2,9 @@ package lc.common.util.game;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.BlockPos;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
+//import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 /**
@@ -52,12 +54,12 @@ public class BlockFilter {
 	 *         matches this specified filter.
 	 */
 	public boolean matches(World world, BlockPos pos) {
-		Block blockOf = world.getBlock(pos);
-		if (targetBlock.getMaterial() == Material.air && blockOf.isAir(world, pos))
+		Block blockOf = (Block) world.getBlockState(pos);
+		if (targetBlock.getMaterial((IBlockState)targetBlock) == Material.AIR && blockOf.isAir(null, world, pos))
 			return true;
 		if (blockOf.equals(targetBlock) && targetMetadata == -1)
 			return true;
-		if (blockOf.equals(targetBlock) && targetMetadata == world.getBlockMetadata(pos))
+		if (blockOf.equals(targetBlock) && targetMetadata == world.getBlockState(pos).)
 			return true;
 		return false;
 	}

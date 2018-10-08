@@ -6,6 +6,7 @@ import lc.api.components.ComponentType;
 import lc.api.defs.Definition;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,12 +14,15 @@ import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.server.S2BPacketChangeGameState;
-import net.minecraft.util.AxisAlignedBB;
+//import net.minecraft.network.play.server.S2BPacketChangeGameState;
+//import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+//import net.minecraft.util.MathHelper;
+//import net.minecraft.util.MovingObjectPosition;
+//import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 @Definition(name = "staffProjectile", type = ComponentType.CORE, entityClass = EntityStaffProjectile.class)
@@ -46,7 +50,7 @@ public class EntityStaffProjectile extends Entity {
 		this.posY -= 0.10000000149011612D;
 		this.posZ -= (double) (MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
 		this.setPosition(this.posX, this.posY, this.posZ);
-		this.yOffset = 0.0F;
+		this.posY = 0.0F;
 		this.motionX = (double) (-MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper
 				.cos(this.rotationPitch / 180.0F * (float) Math.PI));
 		this.motionZ = (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * MathHelper
@@ -78,26 +82,26 @@ public class EntityStaffProjectile extends Entity {
 		super.onUpdate();
 
 		if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
-			float f = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+			float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 			this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 			this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(this.motionY, (double) f) * 180.0D / Math.PI);
 		}
 
-		Block block = this.worldObj.getBlock(this.blockPosX, this.blockPosY, this.blockPosZ);
+		Block block = this.world.getBlock(this.blockPosX, this.blockPosY, this.blockPosZ);
 
-		if (block.getMaterial() != Material.air) {
-			block.setBlockBoundsBasedOnState(this.worldObj, this.blockPosX, this.blockPosY, this.blockPosZ);
-			AxisAlignedBB axisalignedbb = block.getCollisionBoundingBoxFromPool(this.worldObj, this.blockPosX,
+		if (block.getMaterial((IBlockState)block) != Material.AIR) {
+			block.setBlockBoundsBasedOnState(this.world, this.blockPosX, this.blockPosY, this.blockPosZ);
+			AxisAlignedBB axisalignedbb = block.getCollisionBoundingBoxFromPool(this.world, this.blockPosX,
 					this.blockPosY, this.blockPosZ);
 
 			if (axisalignedbb != null
-					&& axisalignedbb.isVecInside(Vec3.createVectorHelper(this.posX, this.posY, this.posZ))) {
+					&& axisalignedbb.isVecInside(Vec3d.createVectorHelper(this.posX, this.posY, this.posZ))) {
 				this.inGround = true;
 			}
 		}
 
 		if (this.inGround) {
-			int j = this.worldObj.getBlockMetadata(this.blockPosX, this.blockPosY, this.blockPosZ);
+			int j = this.world.getBlockMetadata(this.blockPosX, this.blockPosY, this.blockPosZ);
 
 			if (block == this.hitBlock && j == this.hitBlockMetadata) {
 				++this.ticksInGround;
@@ -113,20 +117,19 @@ public class EntityStaffProjectile extends Entity {
 			}
 		} else {
 			++this.ticksInAir;
-			Vec3 vec31 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-			Vec3 vec3 = Vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ
+			Vec3d vec31 = Vec3d.createVectorHelper(this.posX, this.posY, this.posZ);
+			Vec3d vec3 = Vec3d.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ
 					+ this.motionZ);
-			MovingObjectPosition movingobjectposition = this.worldObj.func_147447_a(vec31, vec3, false, true, false);
-			vec31 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-			vec3 = Vec3
-					.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			MovingObjectPosition movingobjectposition = this.world.func_147447_a(vec31, vec3, false, true, false);
+			vec31 = Vec3d.createVectorHelper(this.posX, this.posY, this.posZ);
+			vec3 = vec3.createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
 			if (movingobjectposition != null)
-				vec3 = Vec3.createVectorHelper(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord,
+				vec3 = Vec3d.createVectorHelper(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord,
 						movingobjectposition.hitVec.zCoord);
 
 			Entity entity = null;
-			List list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this,
+			List list = this.world.getEntitiesWithinAABBExcludingEntity(this,
 					this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
 			double d0 = 0.0D;
 			int i;
@@ -167,9 +170,9 @@ public class EntityStaffProjectile extends Entity {
 
 			if (movingobjectposition != null) {
 				if (movingobjectposition.entityHit != null) {
-					f2 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY
+					f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY
 							+ this.motionZ * this.motionZ);
-					int k = MathHelper.ceiling_double_int((double) f2 * this.damage);
+					int k = MathHelper.ceil((double) f2 * this.damage);
 
 					DamageSource damagesource = new DamageSource("lantean_staff");
 
@@ -186,7 +189,7 @@ public class EntityStaffProjectile extends Entity {
 							EntityLivingBase entitylivingbase = (EntityLivingBase) movingobjectposition.entityHit;
 
 							if (this.knockbackStrength > 0) {
-								f4 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+								f4 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 								if (f4 > 0.0F) {
 									movingobjectposition.entityHit.addVelocity(this.motionX
 											* (double) this.knockbackStrength * 0.6000000238418579D / (double) f4,
@@ -216,13 +219,13 @@ public class EntityStaffProjectile extends Entity {
 					this.blockPosX = movingobjectposition.getBlockPos().getX();
 					this.blockPosY = movingobjectposition.getBlockPos().getY();
 					this.blockPosZ = movingobjectposition.getBlockPos().getZ();
-					this.hitBlock = this.worldObj.getBlock(this.blockPosX, this.blockPosY, this.blockPosZ);
-					this.hitBlockMetadata = this.worldObj.getBlockMetadata(this.blockPosX, this.blockPosY,
+					this.hitBlock = this.world.getBlock(this.blockPosX, this.blockPosY, this.blockPosZ);
+					this.hitBlockMetadata = this.world.getBlockMetadata(this.blockPosX, this.blockPosY,
 							this.blockPosZ);
 					this.motionX = (double) ((float) (movingobjectposition.hitVec.xCoord - this.posX));
 					this.motionY = (double) ((float) (movingobjectposition.hitVec.yCoord - this.posY));
 					this.motionZ = (double) ((float) (movingobjectposition.hitVec.zCoord - this.posZ));
-					f2 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY
+					f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY
 							+ this.motionZ * this.motionZ);
 					this.posX -= this.motionX / (double) f2 * 0.05000000074505806D;
 					this.posY -= this.motionY / (double) f2 * 0.05000000074505806D;
@@ -230,8 +233,8 @@ public class EntityStaffProjectile extends Entity {
 					this.playSound("random.bowhit", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 					this.inGround = true;
 
-					if (this.hitBlock.getMaterial() != Material.air) {
-						this.hitBlock.onEntityCollidedWithBlock(this.worldObj, this.blockPosX, this.blockPosY,
+					if (this.hitBlock.getMaterial((IBlockState) this.hitBlock) != Material.AIR) {
+						this.hitBlock.onEntityCollidedWithBlock(this.world, this.blockPosX, this.blockPosY,
 								this.blockPosZ, this);
 					}
 				}
@@ -240,7 +243,7 @@ public class EntityStaffProjectile extends Entity {
 			this.posX += this.motionX;
 			this.posY += this.motionY;
 			this.posZ += this.motionZ;
-			f2 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+			f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 			this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
 			for (this.rotationPitch = (float) (Math.atan2(this.motionY, (double) f2) * 180.0D / Math.PI); this.rotationPitch

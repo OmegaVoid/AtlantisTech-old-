@@ -2,7 +2,9 @@ package lc.common.util.math;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import net.minecraft.util.AxisAlignedBB;
+//import net.minecraft.util.AxisAlignedBB;
+
+import net.minecraft.util.math.AxisAlignedBB;
 
 /**
  * Represents a Transformation in three-dimensional space.
@@ -194,7 +196,7 @@ public class Trans3 {
 	}
 
 	static AxisAlignedBB boxEnclosing(Vector3 p, Vector3 q) {
-		return AxisAlignedBB.fromBounds(min(p.x, q.x), min(p.y, q.y), min(p.z, q.z), max(p.x, q.x), max(p.y, q.y),
+		return new AxisAlignedBB(min(p.x, q.x), min(p.y, q.y), min(p.z, q.z), max(p.x, q.x), max(p.y, q.y),
 				max(p.z, q.z));
 	}
 
