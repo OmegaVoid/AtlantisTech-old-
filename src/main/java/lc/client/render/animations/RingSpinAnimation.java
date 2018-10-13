@@ -18,7 +18,7 @@ public class RingSpinAnimation extends Animation {
 			public void run(LCTile tile) {
 				tile.mixer().replayChannel("spin");
 				Vector3[] chevrons = ((TileStargateBase) tile).getChevronBlocks();
-				World world = tile.getWorldObj();
+				World world = tile.getWorld();
 				for (int i = 0; i < chevrons.length; i++) {
 					if (world.rand.nextInt(2) == 1) {
 						Vector3 chevron = chevrons[i];

@@ -10,7 +10,8 @@ import lc.common.network.LCPacket;
 import lc.common.util.math.DimensionPos;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+//import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * Contract class for packets with specific targets in a world.

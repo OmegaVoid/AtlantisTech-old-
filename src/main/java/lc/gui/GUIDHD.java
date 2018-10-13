@@ -7,6 +7,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -86,7 +87,8 @@ public class GUIDHD extends LCContainerGUI {
 				container.setColor(0.5, 0.25, 0.0);
 			double rx = dhdWidth * 48 / 512.0;
 			double ry = dhdHeight * 48 / (90.0 + 256.0);
-			Tessellator.instance.disableColor();
+			BufferBuilder bb = Tessellator.getInstance().getBuffer();
+			bb.noColor();
 			container.drawTexturedRect(dhdCentreX - rx, dhdTop + dhdCentreY - ry + 8, 2 * rx, 1.5 * ry, 64, 0, 64, 48);
 			container.resetColor();
 			if (dhd.clientAskConnectionOpen()) {

@@ -4,9 +4,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.WorldChunkManager;
+import net.minecraft.util.math.BlockPos;
+
+//import net.minecraft.util.BlockPos;
+//import net.minecraft.world.biome.BiomeGenBase;
+//import net.minecraft.world.biome.WorldChunkManager;
 
 /**
  * Abydos chunk manager implementation.
