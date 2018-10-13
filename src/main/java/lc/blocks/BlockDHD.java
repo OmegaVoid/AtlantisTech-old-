@@ -3,12 +3,12 @@ package lc.blocks;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+//import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+//import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import lc.LCRuntime;
@@ -64,63 +64,63 @@ public class BlockDHD extends LCBlock {
 	};
 
 	/** Top textures */
-	IIcon topTexture[] = new IIcon[StargateType.count()];
+//	IIcon topTexture[] = new IIcon[StargateType.count()];
 	/** Bottom textures */
-	IIcon bottomTexture[] = new IIcon[StargateType.count()];
+//	IIcon bottomTexture[] = new IIcon[StargateType.count()];
 	/** Side textures */
-	IIcon sideTexture[] = new IIcon[StargateType.count()];
+//	IIcon sideTexture[] = new IIcon[StargateType.count()];
 
 	/** Default constructor */
 	public BlockDHD() {
-		super(Material.ground);
+		super(Material.GROUND);
 		setHardness(3F).setResistance(2000F);
 		setOpaque(false).setProvidesInventory(false).setProvidesTypes(true).setCanRotate(true);
 	}
 
-	@Override
-	protected String getTextureName() {
-		return ResourceAccess.formatResourceName("${ASSET_KEY}:%s_${TEX_QUALITY}", getUnlocalizedName());
-	}
+//	@Override
+//	protected String getTextureName() {
+//		return ResourceAccess.formatResourceName("${ASSET_KEY}:%s_${TEX_QUALITY}", getUnlocalizedName());
+//	}
 
-	@Override
-	public IIcon getIcon(int side, int data) {
-		int typeof = getBaseType(data);
-		if (side == 0)
-			return bottomTexture[typeof];
-		else if (side == 1)
-			return topTexture[typeof];
-		else
-			return sideTexture[typeof];
-	}
+//	@Override
+//	public IIcon getIcon(int side, int data) {
+//		int typeof = getBaseType(data);
+//		if (side == 0)
+//			return bottomTexture[typeof];
+//		else if (side == 1)
+//			return topTexture[typeof];
+//		else
+//			return sideTexture[typeof];
+//	}
 
-	@Override
-	public void registerBlockIcons(IIconRegister register) {
-		StargateType[] types = StargateType.values();
-		for (StargateType typeof : types) {
-			StringBuilder typename = new StringBuilder();
-			typename.append("controller_%s");
-			if (typeof.getSuffix() != null && typeof.getSuffix().length() > 0)
-				typename.append("_").append(typeof.getSuffix());
-			topTexture[typeof.ordinal()] = register.registerIcon(ResourceAccess.formatResourceName(
-					"${ASSET_KEY}:%s_${TEX_QUALITY}", String.format(typename.toString(), "top")));
-			bottomTexture[typeof.ordinal()] = register.registerIcon(ResourceAccess.formatResourceName(
-					"${ASSET_KEY}:%s_${TEX_QUALITY}", String.format(typename.toString(), "bottom")));
-			sideTexture[typeof.ordinal()] = register.registerIcon(ResourceAccess.formatResourceName(
-					"${ASSET_KEY}:%s_${TEX_QUALITY}", String.format(typename.toString(), "side")));
-		}
-	}
+//	@Override
+//	public void registerBlockIcons(IIconRegister register) {
+//		StargateType[] types = StargateType.values();
+//		for (StargateType typeof : types) {
+//			StringBuilder typename = new StringBuilder();
+//			typename.append("controller_%s");
+//			if (typeof.getSuffix() != null && typeof.getSuffix().length() > 0)
+//				typename.append("_").append(typeof.getSuffix());
+//			topTexture[typeof.ordinal()] = register.registerIcon(ResourceAccess.formatResourceName(
+//					"${ASSET_KEY}:%s_${TEX_QUALITY}", String.format(typename.toString(), "top")));
+//			bottomTexture[typeof.ordinal()] = register.registerIcon(ResourceAccess.formatResourceName(
+//					"${ASSET_KEY}:%s_${TEX_QUALITY}", String.format(typename.toString(), "bottom")));
+//			sideTexture[typeof.ordinal()] = register.registerIcon(ResourceAccess.formatResourceName(
+//					"${ASSET_KEY}:%s_${TEX_QUALITY}", String.format(typename.toString(), "side")));
+//		}
+//	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-		for (int i = 0; i < blockCraftingCount; i += blockCraftingMask)
-			list.add(new ItemStack(item, 1, i));
-	}
+//	@SuppressWarnings({ "rawtypes", "unchecked" })
+//	@Override
+//	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+//		for (int i = 0; i < blockCraftingCount; i += blockCraftingMask)
+//			list.add(new ItemStack(item, 1, i));
+//	}
 
-	@Override
-	public int damageDropped(int damage) {
-		return damage;
-	}
+//	@Override
+//	public int damageDropped(int damage) {
+//		return damage;
+//	}
 
 	@Override
 	public IBlockRenderInfo renderInfoBlock() {
@@ -149,16 +149,16 @@ public class BlockDHD extends LCBlock {
 		return StargateType.fromOrdinal(getBaseType(metadata));
 	}
 
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float cx,
-			float cy, float cz) {
-		TileDHD te = (TileDHD) world.getTileEntity(x, y, z);
-		if (te != null) {
-			player.openGui(LanteaCraft.instance, LCRuntime.runtime.interfaces().dhdUI.getGUIID(), world, x, y, z);
-			return true;
-		}
-		return false;
-	}
+//	@Override
+//	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float cx,
+//			float cy, float cz) {
+//		TileDHD te = (TileDHD) world.getTileEntity(x, y, z);
+//		if (te != null) {
+//			player.openGui(LanteaCraft.instance, LCRuntime.runtime.interfaces().dhdUI.getGUIID(), world, x, y, z);
+//			return true;
+//		}
+//		return false;
+//	}
 
 	@Override
 	public void configure(ComponentConfig c) {

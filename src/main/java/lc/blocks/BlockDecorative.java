@@ -9,11 +9,11 @@ import lc.common.configuration.xml.ComponentConfig;
 import lc.common.resource.ResourceAccess;
 import lc.items.ItemBlockDecorative;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+//import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+//import net.minecraft.util.IIcon;
 
 /**
  * Decorative block implementation.
@@ -45,7 +45,7 @@ public class BlockDecorative extends LCBlock {
 		/** The resource-name pattern */
 		public final String resource;
 		/** The IIcon icon resource */
-		public IIcon icon;
+//		public IIcon icon;
 
 		DecorBlockTypes(int i, String s) {
 			idx = i;
@@ -68,43 +68,43 @@ public class BlockDecorative extends LCBlock {
 		}
 	}
 
-	private IIcon missing;
+//	private IIcon missing;
 
 	/** Default constructor. */
 	public BlockDecorative() {
-		super(Material.ground);
+		super(Material.GROUND);
 		setHardness(10);
 		setHarvestLevel("pickaxe", 1);
 		setOpaque(true);
 	}
 
-	@Override
-	public void registerBlockIcons(IIconRegister register) {
-		missing = register.registerIcon(ResourceAccess.formatResourceName("${ASSET_KEY}:missing"));
-		for (DecorBlockTypes type : DecorBlockTypes.values())
-			type.icon = register.registerIcon(ResourceAccess.formatResourceName("${ASSET_KEY}:%s_${TEX_QUALITY}",
-					type.resource));
-	}
+//	@Override
+//	public void registerBlockIcons(IIconRegister register) {
+//		missing = register.registerIcon(ResourceAccess.formatResourceName("${ASSET_KEY}:missing"));
+//		for (DecorBlockTypes type : DecorBlockTypes.values())
+//			type.icon = register.registerIcon(ResourceAccess.formatResourceName("${ASSET_KEY}:%s_${TEX_QUALITY}",
+//					type.resource));
+//	}
 
-	@Override
-	public IIcon getIcon(int side, int data) {
-		DecorBlockTypes type = DecorBlockTypes.meta(data);
-		if (type == null)
-			return missing;
-		return type.icon;
-	}
+//	@Override
+//	public IIcon getIcon(int side, int data) {
+//		DecorBlockTypes type = DecorBlockTypes.meta(data);
+//		if (type == null)
+//			return missing;
+//		return type.icon;
+//	}
 
-	@Override
-	public int damageDropped(int meta) {
-		return meta;
-	}
+//	@Override
+//	public int damageDropped(int meta) {
+//		return meta;
+//	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-		for (DecorBlockTypes type : DecorBlockTypes.values())
-			list.add(new ItemStack(item, 1, type.idx));
-	}
+//	@SuppressWarnings({ "rawtypes", "unchecked" })
+//	@Override
+//	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+//		for (DecorBlockTypes type : DecorBlockTypes.values())
+//			list.add(new ItemStack(item, 1, type.idx));
+//	}
 
 	@Override
 	public void configure(ComponentConfig c) {

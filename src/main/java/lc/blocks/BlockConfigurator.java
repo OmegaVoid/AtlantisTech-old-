@@ -12,7 +12,7 @@ import lc.tiles.TileConfigurator;
 public class BlockConfigurator extends LCBlock {
 
 	public BlockConfigurator() {
-		super(Material.ground);
+		super(Material.GROUND);
 		setProvidesInventory(true).setCanRotate(true);
 		// TODO Auto-generated constructor stub
 	}

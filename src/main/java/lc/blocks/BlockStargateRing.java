@@ -14,11 +14,12 @@ import lc.common.resource.ResourceAccess;
 import lc.items.ItemBlockStargateRing;
 import lc.tiles.TileStargateRing;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+//import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
+//import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 /**
@@ -41,9 +42,9 @@ public class BlockStargateRing extends LCBlock {
 	private static final int blockCraftingCount = blockCount;
 
 	/** Top and bottom textures */
-	IIcon topAndBottomTexture[] = new IIcon[StargateType.count()];
+//	IIcon topAndBottomTexture[] = new IIcon[StargateType.count()];
 	/** Side textures */
-	IIcon sideTextures[][] = new IIcon[StargateType.count()][blockMask];
+//	IIcon sideTextures[][] = new IIcon[StargateType.count()][blockMask];
 
 	private static IBlockRenderInfo renderInfo = new IBlockRenderInfo() {
 		@Override
@@ -54,7 +55,7 @@ public class BlockStargateRing extends LCBlock {
 		@Override
 		public boolean doProperty(String property, IBlockAccess access, int data, int x, int y, int z, boolean def) {
 			if (property.equalsIgnoreCase("noRender")) {
-				LCTile t = (LCTile) access.getTileEntity(x, y, z);
+				LCTile t = (LCTile) access.getTileEntity(new BlockPos(x, y, z));
 				if (t != null && t instanceof TileStargateRing)
 					return ((TileStargateRing) t).getState() != MultiblockState.FORMED;
 			}
@@ -69,53 +70,53 @@ public class BlockStargateRing extends LCBlock {
 
 	/** Default constructor */
 	public BlockStargateRing() {
-		super(Material.ground);
+		super(Material.GROUND);
 		setHardness(3F).setResistance(2000F);
 		setOpaque(false).setProvidesInventory(false).setProvidesTypes(true);
 	}
 
-	@Override
-	protected String getTextureName() {
-		return ResourceAccess.formatResourceName("${ASSET_KEY}:%s_${TEX_QUALITY}", getUnlocalizedName());
-	}
+//	@Override
+//	protected String getTextureName() {
+//		return ResourceAccess.formatResourceName("${ASSET_KEY}:%s_${TEX_QUALITY}", getUnlocalizedName());
+//	}
 
-	@Override
-	public IIcon getIcon(int side, int data) {
-		int typeof = getBaseType(data);
-		if (side <= 1)
-			return topAndBottomTexture[typeof];
-		else
-			return sideTextures[typeof][data % blockMask];
-	}
+//	@Override
+//	public IIcon getIcon(int side, int data) {
+//		int typeof = getBaseType(data);
+//		if (side <= 1)
+//			return topAndBottomTexture[typeof];
+//		else
+//			return sideTextures[typeof][data % blockMask];
+//	}
 
-	@Override
-	public void registerBlockIcons(IIconRegister register) {
-		StargateType[] types = StargateType.values();
-		for (StargateType typeof : types) {
-			StringBuilder typename = new StringBuilder();
-			typename.append("stargate_%s");
-			if (typeof.getSuffix() != null && typeof.getSuffix().length() > 0)
-				typename.append("_").append(typeof.getSuffix());
-			topAndBottomTexture[typeof.ordinal()] = register.registerIcon(ResourceAccess.formatResourceName(
-					"${ASSET_KEY}:%s_${TEX_QUALITY}", String.format(typename.toString(), "block")));
-			sideTextures[typeof.ordinal()][0] = register.registerIcon(ResourceAccess.formatResourceName(
-					"${ASSET_KEY}:%s_${TEX_QUALITY}", String.format(typename.toString(), "ring")));
-			sideTextures[typeof.ordinal()][1] = register.registerIcon(ResourceAccess.formatResourceName(
-					"${ASSET_KEY}:%s_${TEX_QUALITY}", String.format(typename.toString(), "chevron")));
-		}
-	}
+//	@Override
+//	public void registerBlockIcons(IIconRegister register) {
+//		StargateType[] types = StargateType.values();
+//		for (StargateType typeof : types) {
+//			StringBuilder typename = new StringBuilder();
+//			typename.append("stargate_%s");
+//			if (typeof.getSuffix() != null && typeof.getSuffix().length() > 0)
+//				typename.append("_").append(typeof.getSuffix());
+//			topAndBottomTexture[typeof.ordinal()] = register.registerIcon(ResourceAccess.formatResourceName(
+//					"${ASSET_KEY}:%s_${TEX_QUALITY}", String.format(typename.toString(), "block")));
+//			sideTextures[typeof.ordinal()][0] = register.registerIcon(ResourceAccess.formatResourceName(
+//					"${ASSET_KEY}:%s_${TEX_QUALITY}", String.format(typename.toString(), "ring")));
+//			sideTextures[typeof.ordinal()][1] = register.registerIcon(ResourceAccess.formatResourceName(
+//					"${ASSET_KEY}:%s_${TEX_QUALITY}", String.format(typename.toString(), "chevron")));
+//		}
+//	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-		for (int i = 0; i < blockCraftingCount; i += blockCraftingMask)
-			list.add(new ItemStack(item, 1, i));
-	}
+//	@SuppressWarnings({ "rawtypes", "unchecked" })
+//	@Override
+//	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+//		for (int i = 0; i < blockCraftingCount; i += blockCraftingMask)
+//			list.add(new ItemStack(item, 1, i));
+//	}
 
-	@Override
-	public int damageDropped(int damage) {
-		return damage;
-	}
+//	@Override
+//	public int damageDropped(int damage) {
+//		return damage;
+//	}
 
 	/**
 	 * Get the base type of this Stargate ring block

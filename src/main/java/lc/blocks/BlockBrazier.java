@@ -3,7 +3,7 @@ package lc.blocks;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+//import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -39,29 +39,29 @@ public class BlockBrazier extends LCBlock {
 		setProvidesTypes(true);
 	}
 
-	@Override
-	public void registerBlockIcons(IIconRegister register) {
-		missing = register.registerIcon(ResourceAccess.formatResourceName("${ASSET_KEY}:missing"));
-	}
+//	@Override
+//	public void registerBlockIcons(IIconRegister register) {
+//		missing = register.registerIcon(ResourceAccess.formatResourceName("${ASSET_KEY}:missing"));
+//	}
 
-	@Override
-	public TextureAtlasSprite getIcon(int side, int data) {
-		if (data > OreType.values().length)
-			return missing;
-		return OreType.values()[data].getItemAsBlockTexture();
-	}
+//	@Override
+//	public TextureAtlasSprite getIcon(int side, int data) {
+//		if (data > OreType.values().length)
+//			return missing;
+//		return OreType.values()[data].getItemAsBlockTexture();
+//	}
 
-	@Override
-	public int damageDropped(int meta) {
-		return meta;
-	}
+//	@Override
+//	public int damageDropped(int meta) {
+//		return meta;
+//	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-		for (int i = 0; i < OreType.values().length; i++)
-			list.add(new ItemStack(item, 1, i));
-	}
+//	@SuppressWarnings({ "rawtypes", "unchecked" })
+//	@Override
+//	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+//		for (int i = 0; i < OreType.values().length; i++)
+//			list.add(new ItemStack(item, 1, i));
+//	}
 
 	@Override
 	public void configure(ComponentConfig c) {
@@ -69,15 +69,15 @@ public class BlockBrazier extends LCBlock {
 
 	}
 
-	@Override
-	public AxisAlignedBB Block.getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-		return new AxisAlignedBB(new BlockPos(x,y,z), new BlockPos(x+1,y+1.4,z+1));
-		Block.
-	}
+//	@Override
+//	public AxisAlignedBB Block.getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+//		return new AxisAlignedBB(new BlockPos(x,y,z), new BlockPos(x+1,y+1.4,z+1));
+//		Block.
+//	}
 
-	@Override
-	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
-		return getCollisionBoundingBoxFromPool(world, x, y, z);
-	}
+//	@Override
+//	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
+//		return getCollisionBoundingBoxFromPool(world, x, y, z);
+//	}
 
 }

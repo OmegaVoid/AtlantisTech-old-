@@ -178,15 +178,15 @@ public abstract class LCBlock extends BlockContainer implements IRenderInfo, ICo
 		((LCTile) tile).setRotation(direction);
 	}
 
-	@Override
-	public final boolean isOpaqueCube() {
-		return isOpaque;
-	}
+//	@Override
+//	public final boolean isOpaqueCube() {
+//		return isOpaque;
+//	}
 
-	@Override
-	public int getRenderType() {
-		return rendererIdx;
-	}
+//	@Override
+//	public int getRenderType() {
+//		return rendererIdx;
+//	}
 
 	@Override
 	public final TileEntity createNewTileEntity(World world, int data) {
@@ -207,9 +207,9 @@ public abstract class LCBlock extends BlockContainer implements IRenderInfo, ICo
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack stack) {
 		super.onBlockPlacedBy(world, pos, state, player, stack);
 		if (canRotate() && !world.isRemote) {
-			int heading = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+			int heading = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 			setRotation(world, pos, directions[heading]);
-			world.markBlockForUpdate(pos);
+			world.notifyBlockUpdate(pos, null, state, heading);
 		}
 	}
 
@@ -231,13 +231,13 @@ public abstract class LCBlock extends BlockContainer implements IRenderInfo, ICo
 		super.breakBlock(world, pos, state);
 	}
 
-	@Override
-	public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
-		TileEntity tile = world.getTileEntity(pos);
-		if (tile != null && tile instanceof IBlockEventHandler)
-			((IBlockEventHandler) tile).neighborChanged();
-		super.onNeighborBlockChange(world, pos, state, neighborBlock);
-	};
+//	@Override
+//	public void neighborChanged(World world, BlockPos pos, IBlockState state, Block neighborBlock) {
+//		TileEntity tile = world.getTileEntity(pos);
+//		if (tile != null && tile instanceof IBlockEventHandler)
+//			((IBlockEventHandler) tile).neighborChanged();
+//		super.neighborChanged(world, pos, state, neighborBlock);
+//	};
 
 	@Override
 	public IBlockRenderInfo renderInfoBlock() {

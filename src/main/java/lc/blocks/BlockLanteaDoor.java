@@ -5,13 +5,15 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+//import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+//import net.minecraft.util.AxisAlignedBB;
+//import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import lc.LCRuntime;
@@ -35,55 +37,55 @@ public class BlockLanteaDoor extends LCBlock {
 
 	/** Default constructor */
 	public BlockLanteaDoor() {
-		super(Material.ground);
+		super(Material.GROUND);
 		setOpaque(false).setProvidesInventory(false).setProvidesTypes(true).setCanRotate(true);
 	}
 
-	@Override
-	public void registerBlockIcons(IIconRegister register) {
-	}
+//	@Override
+//	public void registerBlockIcons(IIconRegister register) {
+//	}
 
-	@Override
-	public IIcon getIcon(int side, int metadata) {
-		return null;
-	}
+//	@Override
+//	public IIcon getIcon(int side, int metadata) {
+//		return null;
+//	}
 
-	@Override
-	public boolean canPlaceBlockAt(World w, int x, int y, int z) {
-		if (w.getBlock(x, y - 1, z) == this)
-			return true;
-		if (!World.doesBlockHaveSolidTopSurface(w, x, y - 1, z))
-			return false;
-		return w.isAirBlock(x, y, z) || super.canPlaceBlockAt(w, x, y, z);
-	}
+//	@Override
+//	public boolean canPlaceBlockAt(World w, int x, int y, int z) {
+//		if (w.getBlock(x, y - 1, z) == this)
+//			return true;
+//		if (!World.doesBlockHaveSolidTopSurface(w, x, y - 1, z))
+//			return false;
+//		return w.isAirBlock(x, y, z) || super.canPlaceBlockAt(w, x, y, z);
+//	}
 
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p, int par6, float par7, float par8,
-			float par9) {
-		if (world.isRemote)
-			return true;
-		TileLanteaDoor doorTile = (TileLanteaDoor) world.getTileEntity(x, y, z);
-		if (doorTile == null)
-			return true;
-		doorTile.openOrCloseDoor();
-		return true;
-	}
+//	@Override
+//	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer p, int par6, float par7, float par8,
+//			float par9) {
+//		if (world.isRemote)
+//			return true;
+//		TileLanteaDoor doorTile = (TileLanteaDoor) world.getTileEntity(x, y, z);
+//		if (doorTile == null)
+//			return true;
+//		doorTile.openOrCloseDoor();
+//		return true;
+//	}
 
 	public Item getItemDropped(int metadata, Random random, int fortune) {
 		return LCRuntime.runtime.blocks().lanteaDoor.getItem();
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-		for (int i = 0; i < blockCount; i++)
-			list.add(new ItemStack(item, 1, i));
-	}
+//	@SuppressWarnings({ "rawtypes", "unchecked" })
+//	@Override
+//	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+//		for (int i = 0; i < blockCount; i++)
+//			list.add(new ItemStack(item, 1, i));
+//	}
 
-	@Override
-	public int damageDropped(int metadata) {
-		return metadata;
-	}
+//	@Override
+//	public int damageDropped(int metadata) {
+//		return metadata;
+//	}
 
 	/**
 	 * Set the bounds of the block
@@ -94,60 +96,60 @@ public class BlockLanteaDoor extends LCBlock {
 	 */
 	protected AxisAlignedBB setBlockBounds(AxisAlignedBB aabb) {
 		if (aabb == null)
-			aabb = AxisAlignedBB.getBoundingBox(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
-		setBlockBounds((float) aabb.minX, (float) aabb.minY, (float) aabb.minZ, (float) aabb.maxX, (float) aabb.maxY,
-				(float) aabb.maxZ);
+			aabb = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
+//		setBlockBounds((float) aabb.minX, (float) aabb.minY, (float) aabb.minZ, (float) aabb.maxX, (float) aabb.maxY,
+//				(float) aabb.maxZ);
 		return aabb;
 	}
 
-	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-		TileLanteaDoor te = (TileLanteaDoor) world.getTileEntity(x, y, z);
-		if (te == null)
-			return;
-		setBlockBounds(te.getBoundingBox());
-	}
+//	@Override
+//	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+//		TileLanteaDoor te = (TileLanteaDoor) world.getTileEntity(x, y, z);
+//		if (te == null)
+//			return;
+//		setBlockBounds(te.getBoundingBox());
+//	}
 
-	@Override
-	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
-		TileLanteaDoor te = (TileLanteaDoor) world.getTileEntity(x, y, z);
-		if (te == null)
-			return AxisAlignedBB.getBoundingBox(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
-		AxisAlignedBB aabb = te.getBoundingBox();
-		if (aabb == null)
-			return AxisAlignedBB.getBoundingBox(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
-		return aabb.offset(x, y, z);
-	}
+//	@Override
+//	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
+//		TileLanteaDoor te = (TileLanteaDoor) world.getTileEntity(x, y, z);
+//		if (te == null)
+//			return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
+//		AxisAlignedBB aabb = te.getBoundingBox();
+//		if (aabb == null)
+//			return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
+//		return aabb.offset(x, y, z);
+//	}
 
-	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-		TileLanteaDoor te = (TileLanteaDoor) world.getTileEntity(x, y, z);
-		if (te == null)
-			return null;
-		AxisAlignedBB aabb = te.getBoundingBox();
-		if (aabb == null)
-			return null;
-		return setBlockBounds(aabb.offset(x, y, z));
-	}
+//	@Override
+//	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+//		TileLanteaDoor te = (TileLanteaDoor) world.getTileEntity(x, y, z);
+//		if (te == null)
+//			return null;
+//		AxisAlignedBB aabb = te.getBoundingBox();
+//		if (aabb == null)
+//			return null;
+//		return setBlockBounds(aabb.offset(x, y, z));
+//	}
 
-	@Override
-	public void onBlockHarvested(World w, int x, int y, int z, int md, EntityPlayer p) {
-		if (w.getBlock(x, y - 1, z) == this)
-			w.setBlockToAir(x, y - 1, z);
-		if (w.getBlock(x, y + 1, z) == this)
-			w.setBlockToAir(x, y + 1, z);
-	}
+//	@Override
+//	public void onBlockHarvested(World w, int x, int y, int z, int md, EntityPlayer p) {
+//		if (w.getBlockState(new BlockPos(x, y - 1, z)) == this)
+//			w.setBlockToAir(new BlockPos(x, y - 1, z));
+//		if (w.getBlockState(new BlockPos(x, y + 1, z)) == this)
+//			w.setBlockToAir(new BlockPos(x, y + 1, z));
+//	}
 
-	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block b) {
-		if (!world.isRemote) {
-			int strength = world.getStrongestIndirectPower(x, y, z);
-			TileLanteaDoor te = (TileLanteaDoor) world.getTileEntity(x, y, z);
-			if (te != null)
-				te.setRedstoneState(strength);
-		}
-
-	}
+//	@Override
+//	public void onNeighborBlockChange(World world, int x, int y, int z, Block b) {
+//		if (!world.isRemote) {
+//			int strength = world.getStrongestIndirectPower(x, y, z);
+//			TileLanteaDoor te = (TileLanteaDoor) world.getTileEntity(x, y, z);
+//			if (te != null)
+//				te.setRedstoneState(strength);
+//		}
+//
+//	}
 
 	@Override
 	public void configure(ComponentConfig c) {
