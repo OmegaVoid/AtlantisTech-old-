@@ -117,10 +117,10 @@ public class LCInit {
 		entities.staffProjectile = DefinitionWrapperProvider.provide(EntityStaffProjectile.class);
 
 		/* Initialize recipes */
-		//initStargateRecipes(runtime, recipes, blocks, items);
-		//initDecorRecipes(runtime, recipes, blocks, items);
-		//initCrystalRecipes(runtime, recipes, blocks, items);
-		//initOreRecipes(runtime, recipes, blocks, items);
+		initStargateRecipes(runtime, recipes, blocks, items);
+		initDecorRecipes(runtime, recipes, blocks, items);
+		initCrystalRecipes(runtime, recipes, blocks, items);
+		initOreRecipes(runtime, recipes, blocks, items);
 
 		/* Initialize structures */
 		structures.scatteredSurfaceStargate = new StructureDefinition("SurfaceStargate", SurfaceStargate.class) {
@@ -159,7 +159,7 @@ public class LCInit {
 				return $predicate;
 			}
 		}.addComp("AbydosPyramid", AbydosPyramidFeature.class);
-		// runtime.registries().structures().register(structures.scatteredAbydosPyramid);
+		runtime.registries().structures().register(structures.scatteredAbydosPyramid);
 
 		/* Initialize interfaces */
 		interfaces.stargateUI = new InterfaceDefinition("stargateUI", "lc.container.ContainerStargate",
@@ -264,51 +264,49 @@ public class LCInit {
 				cSandstone);
 		runtime.registries().recipes().addRecipe(recipes.frame);
 	}
-
-		//IDefinitionReference decorLantSteel = blocks.lanteaDecorBlock.ref().pushAll(1, DecorBlockTypes.LantSteel.idx);
-		//IDefinitionReference decorLantDecSteel = blocks.lanteaDecorBlock.ref().pushAll(1,
-		//		DecorBlockTypes.LantDecSteel.idx);
-		//IDefinitionReference decorGoaGold = blocks.lanteaDecorBlock.ref().pushAll(1, DecorBlockTypes.GoaGold.idx);
-		//IDefinitionReference decorGoaPatGold = blocks.lanteaDecorBlock.ref().pushAll(1, DecorBlockTypes.GoaDecGold.idx);
-		//IDefinitionReference decorLantDoor = blocks.lanteaDoor.ref().pushAll(0);
-		//IDefinitionReference decorGoauldDoor = blocks.lanteaDoor.ref().pushAll(1);
-		//IDefinitionReference naquadah = items.lanteaOreItem.ref().pushAll(1, OreType.NAQUADAH.ordinal());
+	private void initDecorRecipes(LCRuntime runtime, Recipes recipes, Blocks blocks, Items items) {
+		IDefinitionReference decorLantSteel = blocks.lanteaDecorBlock.ref().pushAll(1, DecorBlockTypes.LantSteel.idx);
+		IDefinitionReference decorLantDecSteel = blocks.lanteaDecorBlock.ref().pushAll(1, DecorBlockTypes.LantDecSteel.idx);
+		IDefinitionReference decorGoaGold = blocks.lanteaDecorBlock.ref().pushAll(1, DecorBlockTypes.GoaGold.idx);
+		IDefinitionReference decorGoaPatGold = blocks.lanteaDecorBlock.ref().pushAll(1, DecorBlockTypes.GoaDecGold.idx);
+		IDefinitionReference decorLantDoor = blocks.lanteaDoor.ref().pushAll(0);
+		IDefinitionReference decorGoauldDoor = blocks.lanteaDoor.ref().pushAll(1);
+		IDefinitionReference naquadah = items.lanteaOreItem.ref().pushAll(1, OreType.NAQUADAH.ordinal());
 
 		ItemStack blockGold = new ItemStack(net.minecraft.init.Blocks.GOLD_BLOCK, 1);
 		ItemStack blockIron = new ItemStack(net.minecraft.init.Blocks.IRON_BLOCK, 1);
 		ItemStack wool = new ItemStack(net.minecraft.init.Blocks.WOOL, 1);
 		ItemStack stick = new ItemStack(net.minecraft.init.Items.STICK, 1);
-		//recipes.decorCrafterRecipe = new SimpleRecipeDefinition("decorator", RecipeType.SHAPED, decorator, "000 1  1 ",
-		//		wool, stick);
-		//runtime.registries().recipes().addRecipe(recipes.decorCrafterRecipe);
+		recipes.decorCrafterRecipe = new SimpleRecipeDefinition("decorator", RecipeType.SHAPED, ItemDecorator.class , "000 1  1 ", wool, stick);
+		runtime.registries().recipes().addRecipe(recipes.decorCrafterRecipe);
 
-		//recipes.decorSetterRecipe = new RecipeProxy("decor_editor", RecipeType.PROXY, DecoratorSetterRecipe.class);
-		//runtime.registries().recipes().addRecipe(recipes.decorSetterRecipe);
+		recipes.decorSetterRecipe = new RecipeProxy("decor_editor", RecipeType.PROXY, DecoratorSetterRecipe.class);
+		runtime.registries().recipes().addRecipe(recipes.decorSetterRecipe);
 
-		//recipes.decorLanteanSteel = new SimpleRecipeDefinition("lantean_steel", RecipeType.SHAPELESS, decorLantSteel
-		//		.copy().push(0, 16), "01", blockIron, naquadah);
-		//runtime.registries().recipes().addRecipe(recipes.decorLanteanSteel);
+		recipes.decorLanteanSteel = new SimpleRecipeDefinition("lantean_steel", RecipeType.SHAPELESS, decorLantSteel
+				.copy().push(0, 16), "01", blockIron, naquadah);
+		runtime.registries().recipes().addRecipe(recipes.decorLanteanSteel);
 
-		//recipes.decorLanteanPatternSteel = new SimpleRecipeDefinition("lantean_pattern_steel", RecipeType.SHAPED,
-		//		decorLantDecSteel.copy().push(0, 4), "00 00    ", decorLantSteel);
-		//runtime.registries().recipes().addRecipe(recipes.decorLanteanPatternSteel);
+		recipes.decorLanteanPatternSteel = new SimpleRecipeDefinition("lantean_pattern_steel", RecipeType.SHAPED,
+				decorLantDecSteel.copy().push(0, 4), "00 00    ", decorLantSteel);
+		runtime.registries().recipes().addRecipe(recipes.decorLanteanPatternSteel);
 
-//		recipes.decorGoauldGold = new SimpleRecipeDefinition("goauld_gold", RecipeType.SHAPELESS, decorGoaGold.copy()
-//				.push(0, 16), "01", blockGold, naquadah);
-//		runtime.registries().recipes().addRecipe(recipes.decorGoauldGold);
-//
-//		recipes.decorGoauldDecorGold = new SimpleRecipeDefinition("goauld_decor_gold", RecipeType.SHAPED,
-//				decorGoaPatGold.copy().push(0, 4), "00 00    ", decorGoaGold);
-//		runtime.registries().recipes().addRecipe(recipes.decorGoauldDecorGold);
-//
-//		recipes.decorLanteanDoor = new SimpleRecipeDefinition("lantean_door", RecipeType.SHAPED, decorLantDoor,
-//				" 00 00 11", decorLantDecSteel.copy().push(0, 4), decorLantSteel);
-//		runtime.registries().recipes().addRecipe(recipes.decorLanteanDoor);
-//
-//		recipes.decorGoauldDoor = new SimpleRecipeDefinition("goauld_door", RecipeType.SHAPED, decorGoauldDoor,
-//				" 00 00 11", decorGoaPatGold.copy().push(0, 4), decorGoaGold);
-//		runtime.registries().recipes().addRecipe(recipes.decorGoauldDoor);
-	//}
+		recipes.decorGoauldGold = new SimpleRecipeDefinition("goauld_gold", RecipeType.SHAPELESS, decorGoaGold.copy()
+				.push(0, 16), "01", blockGold, naquadah);
+		runtime.registries().recipes().addRecipe(recipes.decorGoauldGold);
+
+		recipes.decorGoauldDecorGold = new SimpleRecipeDefinition("goauld_decor_gold", RecipeType.SHAPED,
+				decorGoaPatGold.copy().push(0, 4), "00 00    ", decorGoaGold);
+		runtime.registries().recipes().addRecipe(recipes.decorGoauldDecorGold);
+
+		recipes.decorLanteanDoor = new SimpleRecipeDefinition("lantean_door", RecipeType.SHAPED, decorLantDoor,
+				" 00 00 11", decorLantDecSteel.copy().push(0, 4), decorLantSteel);
+		runtime.registries().recipes().addRecipe(recipes.decorLanteanDoor);
+
+		recipes.decorGoauldDoor = new SimpleRecipeDefinition("goauld_door", RecipeType.SHAPED, decorGoauldDoor,
+				" 00 00 11", decorGoaPatGold.copy().push(0, 4), decorGoaGold);
+		runtime.registries().recipes().addRecipe(recipes.decorGoauldDoor);
+	}
 
 	/**
 	 * Called during post-initialization
@@ -323,3 +321,4 @@ public class LCInit {
 	}
 
 }
+
